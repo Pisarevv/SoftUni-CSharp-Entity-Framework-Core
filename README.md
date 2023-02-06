@@ -1,4 +1,4 @@
-# ![My Skills](https://skillicons.dev/icons?i=cs) SoftUni C# MSSQL course
+# ![My Skills](https://skillicons.dev/icons?i=cs) SoftUni Entity Framework Core Course
 
 ## 🧾Description 
 The course follows in detail the work with the ORM technology: Entity Framework Core (EF core), which is a standard for ORM in C# and .NET Core applications. EF Core enables mapping between a relational database and an object-oriented model through "database first" and "code first" approaches, and provides a powerful object-oriented API for querying the database and performing CRUD operations. EF core provides both an additional level of abstraction and an easy way to process the data from the database.
