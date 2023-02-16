@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace P02._Villian_Names;
-internal class Config
+internal static class Config
 {
+    public const string ConnectionString = @"Server=BG-L-5003591\SQLEXPRESS;Database=MinionsDB; Integrated Security=true; TrustServerCertificate = true";
 }
