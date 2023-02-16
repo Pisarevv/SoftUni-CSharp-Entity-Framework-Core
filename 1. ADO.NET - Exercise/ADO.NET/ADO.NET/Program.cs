@@ -12,12 +12,15 @@ internal class Program
              new SqlConnection(Config.ConnectionString);
         await sqlConnection.OpenAsync();
 
-        string result = await GetAllVilliansWithTheirMiniosAsync(sqlConnection);
+        int vilainId = int.Parse(Console.ReadLine());
+
+        string result = await GetVillianWithAllMinionsAsync(sqlConnection, vilainId);
 
         Console.WriteLine(result);
 
     }
 
+    //Problem 02
     static async Task<string> GetAllVilliansWithTheirMiniosAsync(SqlConnection sqlConnection)
     {
         StringBuilder sb = new StringBuilder();
@@ -33,5 +36,48 @@ internal class Program
         }
 
         return sb.ToString().TrimEnd();
+    }
+
+    //Problem 03
+    static async Task<string> GetVillianWithAllMinionsAsync(SqlConnection sqlConnection, int villianId) 
+    {
+        StringBuilder sb = new StringBuilder();
+
+        SqlCommand getVillainNmae = new SqlCommand(SqlQueries.GetVillainById, sqlConnection);
+        getVillainNmae.Parameters.AddWithValue("@Id", villianId);
+
+        object ?villainNameObj = await getVillainNmae.ExecuteScalarAsync();
+
+        if(villainNameObj == null)
+        {
+            return $"No villain with ID ${villianId} exists in the database.";
+        }
+
+        string vilainName = (string)villainNameObj;
+        sb.AppendLine($"{vilainName}");
+
+        SqlCommand getAllMinionsCmd = new SqlCommand(SqlQueries.GetAllMinionsByVillanId, sqlConnection);
+        getAllMinionsCmd.Parameters.AddWithValue("@id", villianId);
+        SqlDataReader minionsReader = await getAllMinionsCmd.ExecuteReaderAsync();
+        
+
+        if (!minionsReader.HasRows)
+        {
+            sb.AppendLine("(no minions)");
+        }
+        else
+        {
+            while (minionsReader.Read()) 
+            {
+                long rowNum = (long)minionsReader["RowNum"];
+                string minionName = (string)minionsReader["Name"];
+                int minionAge = (int)minionsReader["Age"];
+
+                sb.AppendLine($"{rowNum}. {minionName} {minionAge}");
+            }
+        }
+
+        return sb.ToString();
+          
     }
 }
