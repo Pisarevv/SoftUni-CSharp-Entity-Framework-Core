@@ -41,4 +41,7 @@ internal static class SqlQueries
 
     public const string CreateVillain =
         @"INSERT INTO Villains (Name, EvilnessFactorId)  VALUES (@villainName, 4)";
+
+    public const string AddMinionToVillain =
+        @"INSERT INTO MinionsVillains (MinionId, VillainId) VALUES (@villainId, @minionId)";
 }

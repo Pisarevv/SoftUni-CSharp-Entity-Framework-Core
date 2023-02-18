@@ -20,6 +20,8 @@ internal class Program
 
         var result = await AddMinionVillian(sqlConnection, sqlTransaction, minionInformation[1], villainInformation[1]);
 
+        Console.WriteLine(result);
+
 
 
 
@@ -98,44 +100,50 @@ internal class Program
         int minionAge = int.Parse(minionArgs[1]);
         string town = minionArgs[2];
 
-        object townIdObj = GetMinionTownId(sqlConnection, town, sb);
+        object townIdObj = await GetMinionTownId(sqlConnection,sqlTransaction, town, sb);
 
         if (townIdObj == null)
         {
             await AddMinionVillage(sqlConnection, sqlTransaction, town);
-            townIdObj = await GetMinionTownId(sqlConnection, town, sb);
+            townIdObj = await GetMinionTownId(sqlConnection,sqlTransaction, town, sb);
             sb.AppendLine($"Town {town} was added to the database.");
         }
 
         int townId = (int)townIdObj;
 
-        object minionIdObj = await GetMinionId(sqlConnection, minionName);
+        object minionIdObj = await GetMinionId(sqlConnection,sqlTransaction, minionName);
 
         if (minionIdObj == null)
         {
             await AddMinion(sqlConnection, sqlTransaction, minionName,minionAge,townId);
-            minionIdObj = await GetMinionId(sqlConnection, minionName);
+            minionIdObj = await GetMinionId(sqlConnection,sqlTransaction, minionName);
         }
 
         int minionId = (int)minionIdObj;
 
-        object villainIdObj = await GetVillainId(sqlConnection, villainName);
+        object villainIdObj = await GetVillainId(sqlConnection,sqlTransaction, villainName);
 
         if (villainIdObj == null)
         {
             await AddVilain(sqlConnection, sqlTransaction, villainName);
-            villainIdObj = await GetVillainId(sqlConnection, villainName);
+            villainIdObj = await GetVillainId(sqlConnection,sqlTransaction, villainName);
             sb.AppendLine($"Villain {villainName} was added to the database.");
         }
 
         int vilainId = (int)villainIdObj;
 
+        await AddMinionToVillain(sqlConnection, sqlTransaction, minionId, vilainId);
+        sb.AppendLine($"Successfully added {minionName} to be minion of {villainName}.");
+
+        sqlTransaction.CommitAsync();
+
+
         return sb.ToString();
     }
 
-    static async Task<object> GetMinionId(SqlConnection sqlConnection, string minionName)
+    static async Task<object> GetMinionId(SqlConnection sqlConnection,SqlTransaction sqlTransaction, string minionName)
     {
-        SqlCommand getMinionId = new SqlCommand(SqlQueries.GetMinionId, sqlConnection);
+        SqlCommand getMinionId = new SqlCommand(SqlQueries.GetMinionId, sqlConnection, sqlTransaction);
         getMinionId.Parameters.AddWithValue("@name", minionName);
 
         object minionIdObject = await getMinionId.ExecuteScalarAsync();
@@ -144,9 +152,9 @@ internal class Program
 
     }
 
-    static async Task<object> GetVillainId(SqlConnection sqlConnection, string minionName)
+    static async Task<object> GetVillainId(SqlConnection sqlConnection,SqlTransaction sqlTransaction, string minionName)
     {
-        SqlCommand getVillainId = new SqlCommand(SqlQueries.GetVillainId, sqlConnection);
+        SqlCommand getVillainId = new SqlCommand(SqlQueries.GetVillainId, sqlConnection, sqlTransaction);
         getVillainId.Parameters.AddWithValue("@name", minionName);
 
         object villainIdObject = await getVillainId.ExecuteScalarAsync();
@@ -155,10 +163,10 @@ internal class Program
 
     }
 
-    static async Task<object> GetMinionTownId(SqlConnection sqlConnection, string townName, StringBuilder sb)
+    static async Task<object> GetMinionTownId(SqlConnection sqlConnection,SqlTransaction sqlTransaction, string townName, StringBuilder sb)
     {
 
-        SqlCommand getMinionVillageId = new SqlCommand(SqlQueries.GetMinionVillageId, sqlConnection);
+        SqlCommand getMinionVillageId = new SqlCommand(SqlQueries.GetMinionVillageId, sqlConnection, sqlTransaction);
         getMinionVillageId.Parameters.AddWithValue("@townName", townName);
 
         object townIdObj = await getMinionVillageId.ExecuteScalarAsync();
@@ -204,13 +212,29 @@ internal class Program
     {
         try
         {
-            SqlCommand createMinion = new SqlCommand(SqlQueries.CreateVillain, sqlConnection, sqlTransaction);
-            createMinion.Parameters.AddWithValue("@villainName", villainName);
-            await createMinion.ExecuteNonQueryAsync();
+            SqlCommand createVilllain = new SqlCommand(SqlQueries.CreateVillain, sqlConnection, sqlTransaction);
+            createVilllain.Parameters.AddWithValue("@villainName", villainName);
+            await createVilllain.ExecuteNonQueryAsync();
         }
         catch (Exception)
         {
 
+            await sqlTransaction.RollbackAsync();
+            throw new Exception("Transactipn fail");
+        }
+    }
+
+    static async Task AddMinionToVillain(SqlConnection sqlConnection, SqlTransaction sqlTransaction, int minionId, int villainId)
+    {
+        try
+        {
+            SqlCommand sqlCommand = new SqlCommand(SqlQueries.AddMinionToVillain, sqlConnection, sqlTransaction);
+            sqlCommand.Parameters.AddWithValue("@villainId", villainId);
+            sqlCommand.Parameters.AddWithValue(@"minionId", minionId);
+            await sqlCommand.ExecuteNonQueryAsync();
+        }
+        catch (Exception)
+        {
             await sqlTransaction.RollbackAsync();
             throw new Exception("Transactipn fail");
         }
