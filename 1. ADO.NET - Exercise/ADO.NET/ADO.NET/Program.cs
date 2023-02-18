@@ -12,11 +12,16 @@ internal class Program
              new SqlConnection(Config.ConnectionString);
         await sqlConnection.OpenAsync();
 
-        int vilainId = int.Parse(Console.ReadLine());
+        SqlTransaction sqlTransaction = sqlConnection.BeginTransaction();
 
-        string result = await GetVillianWithAllMinionsAsync(sqlConnection, vilainId);
 
-        Console.WriteLine(result);
+        string[] minionInformation = Console.ReadLine().Split(":",StringSplitOptions.RemoveEmptyEntries);
+        string[] villainInformation = Console.ReadLine().Split(": ", StringSplitOptions.RemoveEmptyEntries);
+
+        var result = await AddMinionVillian(sqlConnection, sqlTransaction, minionInformation[1], villainInformation[1]);
+        
+
+      
 
     }
 
@@ -79,5 +84,51 @@ internal class Program
 
         return sb.ToString();
           
+    }
+
+    //Problem 04
+
+    static async Task<string> AddMinionVillian
+        (SqlConnection sqlConnection, SqlTransaction sqlTransaction, string minionInfo, string villainName)
+    {
+        string[] minionArgs = minionInfo.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+        return null;
+    }
+
+
+
+    static async Task<int> GetMinionTownId (SqlConnection sqlConnection,SqlTransaction sqlTransaction, string townName)
+    {
+
+        SqlCommand getMinionVillageId = new SqlCommand(SqlQueries.GetMinionVillageId, sqlConnection, sqlTransaction);
+        getMinionVillageId.Parameters.AddWithValue("@townName", townName);
+
+        var townIdObj = await getMinionVillageId.ExecuteScalarAsync();
+
+        if (townIdObj == null)
+        {
+            await AddMinionVillage(sqlConnection, sqlTransaction, townName);
+            townIdObj = await getMinionVillageId.ExecuteScalarAsync();
+        }
+
+        var townId = (int)townIdObj;
+
+        return townId;
+
+    }
+
+    static async Task AddMinionVillage(SqlConnection sqlConnection, SqlTransaction sqlTransaction, string townName)
+    {
+        try
+        {
+            SqlCommand createMinionVillage = new SqlCommand(SqlQueries.CreateMinionVillage, sqlConnection, sqlTransaction);
+            createMinionVillage.Parameters.AddWithValue("@townName", townName);
+            await createMinionVillage.ExecuteNonQueryAsync();
+        }
+        catch (Exception)
+        {
+            await sqlTransaction.RollbackAsync();
+            throw new Exception("Transactipn fail");
+        }
     }
 }

@@ -26,4 +26,10 @@ internal static class SqlQueries
                                     JOIN Minions As m ON mv.MinionId = m.Id
                                    WHERE mv.VillainId = @Id
                                 ORDER BY m.Name";
+
+    public const string GetMinionVillageId =
+        @"SELECT Id FROM Towns WHERE Name = @townName";
+
+    public const string CreateMinionVillage =
+        @"INSERT INTO Towns (Name) VALUES (@townName)";
 }
