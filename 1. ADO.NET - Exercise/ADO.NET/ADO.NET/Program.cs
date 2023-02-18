@@ -90,7 +90,7 @@ internal class Program
 
     //Problem 04
 
-    static async Task<string> AddMinionVillian
+    static async Task<string> AddMinionVillianAsync
         (SqlConnection sqlConnection, SqlTransaction sqlTransaction, string minionInfo, string villainName)
     {
         StringBuilder sb = new StringBuilder();
@@ -141,7 +141,7 @@ internal class Program
         return sb.ToString();
     }
 
-    static async Task<object> GetMinionId(SqlConnection sqlConnection,SqlTransaction sqlTransaction, string minionName)
+    static async Task<object> GetMinionIdAsync(SqlConnection sqlConnection,SqlTransaction sqlTransaction, string minionName)
     {
         SqlCommand getMinionId = new SqlCommand(SqlQueries.GetMinionId, sqlConnection, sqlTransaction);
         getMinionId.Parameters.AddWithValue("@name", minionName);
@@ -152,7 +152,7 @@ internal class Program
 
     }
 
-    static async Task<object> GetVillainId(SqlConnection sqlConnection,SqlTransaction sqlTransaction, string minionName)
+    static async Task<object> GetVillainIdAsync(SqlConnection sqlConnection,SqlTransaction sqlTransaction, string minionName)
     {
         SqlCommand getVillainId = new SqlCommand(SqlQueries.GetVillainId, sqlConnection, sqlTransaction);
         getVillainId.Parameters.AddWithValue("@name", minionName);
@@ -163,7 +163,7 @@ internal class Program
 
     }
 
-    static async Task<object> GetMinionTownId(SqlConnection sqlConnection,SqlTransaction sqlTransaction, string townName, StringBuilder sb)
+    static async Task<object> GetMinionTownIdAsync(SqlConnection sqlConnection,SqlTransaction sqlTransaction, string townName, StringBuilder sb)
     {
 
         SqlCommand getMinionVillageId = new SqlCommand(SqlQueries.GetMinionVillageId, sqlConnection, sqlTransaction);
@@ -175,7 +175,7 @@ internal class Program
 
     }
 
-    static async Task AddMinionVillage(SqlConnection sqlConnection, SqlTransaction sqlTransaction, string townName)
+    static async Task AddMinionVillageAsync(SqlConnection sqlConnection, SqlTransaction sqlTransaction, string townName)
     {
         try
         {
@@ -190,7 +190,7 @@ internal class Program
         }
     }
 
-    static async Task AddMinion(SqlConnection sqlConnection, SqlTransaction sqlTransaction, string minionName, int minionAge, int townId)
+    static async Task AddMinionAsync(SqlConnection sqlConnection, SqlTransaction sqlTransaction, string minionName, int minionAge, int townId)
     {
         try
         {
@@ -208,7 +208,7 @@ internal class Program
         }
     }
 
-    static async Task AddVilain(SqlConnection sqlConnection, SqlTransaction sqlTransaction, string villainName)
+    static async Task AddVilainAsync(SqlConnection sqlConnection, SqlTransaction sqlTransaction, string villainName)
     {
         try
         {
@@ -224,7 +224,7 @@ internal class Program
         }
     }
 
-    static async Task AddMinionToVillain(SqlConnection sqlConnection, SqlTransaction sqlTransaction, int minionId, int villainId)
+    static async Task AddMinionToVillainAsync(SqlConnection sqlConnection, SqlTransaction sqlTransaction, int minionId, int villainId)
     {
         try
         {
@@ -239,4 +239,27 @@ internal class Program
             throw new Exception("Transactipn fail");
         }
     }
+
+    //Problem 5
+    static async Task<string> ChangeTownsInCountryCasingAsync(SqlConnection sqlConnection, SqlTransaction sqlTransaction, string countryName)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        SqlCommand sqlCommand = new SqlCommand(SqlQueries.UpdateTownsCasingInCountry, sqlConnection, sqlTransaction);
+        sqlCommand.Parameters.AddWithValue("@countryName", countryName);
+        
+        int affectedRows = (int)await sqlCommand.ExecuteScalarAsync();
+
+        if (affectedRows == 0)
+        {
+            sb.AppendLine("No town names were affected.");
+            return sb.ToString();
+        }
+
+        sb.AppendLine($"${affectedRows} town names were affected. ");
+
+
+        return sb.ToString();
+    }
+
 }

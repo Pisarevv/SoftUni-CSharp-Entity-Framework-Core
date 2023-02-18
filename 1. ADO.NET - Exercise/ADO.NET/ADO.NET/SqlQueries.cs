@@ -44,4 +44,8 @@ internal static class SqlQueries
 
     public const string AddMinionToVillain =
         @"INSERT INTO MinionsVillains (MinionId, VillainId) VALUES (@villainId, @minionId)";
+
+    public const string UpdateTownsCasingInCountry =
+        @"  SET Name = UPPER(Name)
+          WHERE CountryCode = (SELECT c.Id FROM Countries AS c WHERE c.Name = @countryName)";
 }
