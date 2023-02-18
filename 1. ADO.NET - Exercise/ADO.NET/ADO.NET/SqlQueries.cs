@@ -15,9 +15,6 @@ internal static class SqlQueries
             HAVING COUNT(mv.VillainId) > 3 
           ORDER BY COUNT(mv.VillainId)";
 
-    public const string GetVillainById =
-        @"SELECT Name FROM Villains WHERE Id = @Id";
-
     public const string GetAllMinionsByVillanId =
         @"SELECT ROW_NUMBER() OVER (ORDER BY m.Name) as RowNum,
                                          m.Name, 
@@ -38,4 +35,10 @@ internal static class SqlQueries
 
     public const string CreateMinion =
         @"INSERT INTO Minions (Name, Age, TownId) VALUES (@name, @age, @townId)";
+
+    public const string GetVillainId =
+        @"SELECT Id FROM Villains WHERE Name = @Name";
+
+    public const string CreateVillain =
+        @"INSERT INTO Villains (Name, EvilnessFactorId)  VALUES (@villainName, 4)";
 }

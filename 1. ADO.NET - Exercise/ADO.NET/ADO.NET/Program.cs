@@ -48,7 +48,7 @@ internal class Program
     {
         StringBuilder sb = new StringBuilder();
 
-        SqlCommand getVillainNmae = new SqlCommand(SqlQueries.GetVillainById, sqlConnection);
+        SqlCommand getVillainNmae = new SqlCommand(SqlQueries.GetVillainId, sqlConnection);
         getVillainNmae.Parameters.AddWithValue("@Id", villianId);
 
         object? villainNameObj = await getVillainNmae.ExecuteScalarAsync();
@@ -117,6 +117,19 @@ internal class Program
             minionIdObj = await GetMinionId(sqlConnection, minionName);
         }
 
+        int minionId = (int)minionIdObj;
+
+        object villainIdObj = await GetVillainId(sqlConnection, villainName);
+
+        if (villainIdObj == null)
+        {
+            await AddVilain(sqlConnection, sqlTransaction, villainName);
+            villainIdObj = await GetVillainId(sqlConnection, villainName);
+            sb.AppendLine($"Villain {villainName} was added to the database.");
+        }
+
+        int vilainId = (int)villainIdObj;
+
         return sb.ToString();
     }
 
@@ -131,6 +144,16 @@ internal class Program
 
     }
 
+    static async Task<object> GetVillainId(SqlConnection sqlConnection, string minionName)
+    {
+        SqlCommand getVillainId = new SqlCommand(SqlQueries.GetVillainId, sqlConnection);
+        getVillainId.Parameters.AddWithValue("@name", minionName);
+
+        object villainIdObject = await getVillainId.ExecuteScalarAsync();
+
+        return villainIdObject;
+
+    }
 
     static async Task<object> GetMinionTownId(SqlConnection sqlConnection, string townName, StringBuilder sb)
     {
@@ -167,6 +190,22 @@ internal class Program
             createMinion.Parameters.AddWithValue("@name", minionName);
             createMinion.Parameters.AddWithValue("@age", minionAge);
             createMinion.Parameters.AddWithValue("@townId", townId);
+            await createMinion.ExecuteNonQueryAsync();
+        }
+        catch (Exception)
+        {
+
+            await sqlTransaction.RollbackAsync();
+            throw new Exception("Transactipn fail");
+        }
+    }
+
+    static async Task AddVilain(SqlConnection sqlConnection, SqlTransaction sqlTransaction, string villainName)
+    {
+        try
+        {
+            SqlCommand createMinion = new SqlCommand(SqlQueries.CreateVillain, sqlConnection, sqlTransaction);
+            createMinion.Parameters.AddWithValue("@villainName", villainName);
             await createMinion.ExecuteNonQueryAsync();
         }
         catch (Exception)
