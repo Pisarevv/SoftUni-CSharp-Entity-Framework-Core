@@ -1,5 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.VisualBasic;
 using P02._Villian_Names;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace ADO.NET;
@@ -15,10 +17,14 @@ internal class Program
         SqlTransaction sqlTransaction = sqlConnection.BeginTransaction();
 
 
-        string[] minionInformation = Console.ReadLine().Split(":", StringSplitOptions.RemoveEmptyEntries);
-        string[] villainInformation = Console.ReadLine().Split(": ", StringSplitOptions.RemoveEmptyEntries);
+        //string[] minionInformation = Console.ReadLine().Split(":", StringSplitOptions.RemoveEmptyEntries);
+        //string[] villainInformation = Console.ReadLine().Split(": ", StringSplitOptions.RemoveEmptyEntries);
 
-        var result = await AddMinionVillian(sqlConnection, sqlTransaction, minionInformation[1], villainInformation[1]);
+        //var result = await AddMinionVillianAsync(sqlConnection, sqlTransaction, minionInformation[1], villainInformation[1]);
+
+        string country = Console.ReadLine();
+
+        var result = await ChangeTownsInCountryCasingAsync(sqlConnection, sqlTransaction, country);
 
         Console.WriteLine(result);
 
@@ -100,42 +106,42 @@ internal class Program
         int minionAge = int.Parse(minionArgs[1]);
         string town = minionArgs[2];
 
-        object townIdObj = await GetMinionTownId(sqlConnection,sqlTransaction, town, sb);
+        object townIdObj = await GetMinionTownIdAsync(sqlConnection,sqlTransaction, town, sb);
 
         if (townIdObj == null)
         {
-            await AddMinionVillage(sqlConnection, sqlTransaction, town);
-            townIdObj = await GetMinionTownId(sqlConnection,sqlTransaction, town, sb);
+            await AddMinionVillageAsync(sqlConnection, sqlTransaction, town);
+            townIdObj = await GetMinionTownIdAsync(sqlConnection,sqlTransaction, town, sb);
             sb.AppendLine($"Town {town} was added to the database.");
         }
 
         int townId = (int)townIdObj;
 
-        object minionIdObj = await GetMinionId(sqlConnection,sqlTransaction, minionName);
+        object minionIdObj = await GetMinionIdAsync(sqlConnection,sqlTransaction, minionName);
 
         if (minionIdObj == null)
         {
-            await AddMinion(sqlConnection, sqlTransaction, minionName,minionAge,townId);
-            minionIdObj = await GetMinionId(sqlConnection,sqlTransaction, minionName);
+            await AddMinionAsync(sqlConnection, sqlTransaction, minionName,minionAge,townId);
+            minionIdObj = await GetMinionIdAsync(sqlConnection,sqlTransaction, minionName);
         }
 
         int minionId = (int)minionIdObj;
 
-        object villainIdObj = await GetVillainId(sqlConnection,sqlTransaction, villainName);
+        object villainIdObj = await GetVillainIdAsync(sqlConnection,sqlTransaction, villainName);
 
         if (villainIdObj == null)
         {
-            await AddVilain(sqlConnection, sqlTransaction, villainName);
-            villainIdObj = await GetVillainId(sqlConnection,sqlTransaction, villainName);
+            await AddVilainAsync(sqlConnection, sqlTransaction, villainName);
+            villainIdObj = await GetVillainIdAsync(sqlConnection,sqlTransaction, villainName);
             sb.AppendLine($"Villain {villainName} was added to the database.");
         }
 
         int vilainId = (int)villainIdObj;
 
-        await AddMinionToVillain(sqlConnection, sqlTransaction, minionId, vilainId);
+        await AddMinionToVillainAsync(sqlConnection, sqlTransaction, minionId, vilainId);
         sb.AppendLine($"Successfully added {minionName} to be minion of {villainName}.");
 
-        sqlTransaction.CommitAsync();
+        await sqlTransaction.CommitAsync();
 
 
         return sb.ToString();
@@ -244,19 +250,33 @@ internal class Program
     static async Task<string> ChangeTownsInCountryCasingAsync(SqlConnection sqlConnection, SqlTransaction sqlTransaction, string countryName)
     {
         StringBuilder sb = new StringBuilder();
+        ICollection<string> cities = new Collection<string>();
 
-        SqlCommand sqlCommand = new SqlCommand(SqlQueries.UpdateTownsCasingInCountry, sqlConnection, sqlTransaction);
-        sqlCommand.Parameters.AddWithValue("@countryName", countryName);
+        SqlCommand updateTownsCasingCmd = new SqlCommand(SqlQueries.UpdateTownsCasingInCountry, sqlConnection, sqlTransaction);
+        updateTownsCasingCmd.Parameters.AddWithValue("@countryName", countryName);
         
-        int affectedRows = (int)await sqlCommand.ExecuteScalarAsync();
+        int affectedRows = await updateTownsCasingCmd.ExecuteNonQueryAsync();
 
         if (affectedRows == 0)
         {
             sb.AppendLine("No town names were affected.");
             return sb.ToString();
+
         }
 
-        sb.AppendLine($"${affectedRows} town names were affected. ");
+        sb.AppendLine($"{affectedRows} town names were affected. ");
+
+        SqlCommand selectTownsWithChangedCasingCmd = new SqlCommand(SqlQueries.GetTownsWithChangedCasing, sqlConnection, sqlTransaction);
+        selectTownsWithChangedCasingCmd.Parameters.AddWithValue("@countryName", countryName);
+
+        SqlDataReader townsReader = await selectTownsWithChangedCasingCmd.ExecuteReaderAsync();
+
+        while(townsReader.Read())
+        {
+            cities.Add(townsReader["Name"].ToString());
+        }
+
+        sb.AppendLine($"[{string.Join(" ", cities)}]");
 
 
         return sb.ToString();
