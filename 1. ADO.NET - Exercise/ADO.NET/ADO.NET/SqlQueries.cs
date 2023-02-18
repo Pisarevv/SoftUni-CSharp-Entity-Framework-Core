@@ -32,4 +32,10 @@ internal static class SqlQueries
 
     public const string CreateMinionVillage =
         @"INSERT INTO Towns (Name) VALUES (@townName)";
+
+    public const string GetMinionId =
+        @"SELECT Id FROM Minions WHERE Name = @Name";
+
+    public const string CreateMinion =
+        @"INSERT INTO Minions (Name, Age, TownId) VALUES (@name, @age, @townId)";
 }
