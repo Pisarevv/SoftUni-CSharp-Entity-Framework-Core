@@ -22,9 +22,9 @@ internal class Program
 
         //var result = await AddMinionVillianAsync(sqlConnection, sqlTransaction, minionInformation[1], villainInformation[1]);
 
-        string country = Console.ReadLine();
+        int id = int.Parse(Console.ReadLine());
 
-        var result = await ChangeTownsInCountryCasingAsync(sqlConnection, sqlTransaction, country);
+        var result = await RemoveVillainById(sqlConnection, sqlTransaction, id);
 
         Console.WriteLine(result);
 
@@ -282,4 +282,51 @@ internal class Program
         return sb.ToString();
     }
 
+    //Problem 6
+    static async Task<string> RemoveVillainById(SqlConnection sqlConnection, SqlTransaction sqlTransaction, int id)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        try
+        {
+            SqlCommand getVillainNameCmd = new SqlCommand(SqlQueries.GetVillainNameById, sqlConnection, sqlTransaction);
+            getVillainNameCmd.Parameters.AddWithValue("@villainId", id);
+
+            var villainNameObj = await getVillainNameCmd.ExecuteScalarAsync();
+
+            if (villainNameObj == null)
+            {
+                sb.AppendLine("No such villain was found.");
+                return sb.ToString();
+            }
+
+            SqlCommand deleteMinionsVillainsCmd = new SqlCommand(SqlQueries.DeleteMinionsVillainsRelationByVilId, sqlConnection, sqlTransaction);
+            deleteMinionsVillainsCmd.Parameters.AddWithValue("@villainId", id);
+
+            int releasedMinionsCount = await deleteMinionsVillainsCmd.ExecuteNonQueryAsync();
+
+            SqlCommand deleteVillainCmd = new SqlCommand(SqlQueries.DeleteVillainById, sqlConnection, sqlTransaction);
+            deleteVillainCmd.Parameters.AddWithValue("@villainId", id);
+
+            int isVillainDeleted = await deleteVillainCmd.ExecuteNonQueryAsync();
+
+            if(isVillainDeleted == 1)
+            {
+                sb.AppendLine($"{(string)villainNameObj} was deleted.");
+                sb.AppendLine($"{releasedMinionsCount} minions were released.");
+            }
+
+            return sb.ToString();
+        }
+
+        catch (Exception)
+        {
+            sqlTransaction.Rollback();
+            throw new Exception();
+        }
+
+
+
+
+    }
 }

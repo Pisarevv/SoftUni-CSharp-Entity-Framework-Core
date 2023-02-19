@@ -55,4 +55,15 @@ internal static class SqlQueries
              FROM Towns as t
              JOIN Countries AS c ON c.Id = t.CountryCode
             WHERE c.Name = @countryName";
+
+    public const string GetVillainNameById =
+        @" SELECT Name FROM Villains WHERE Id = @villainId";
+
+    public const string DeleteMinionsVillainsRelationByVilId =
+        @"DELETE FROM MinionsVillains 
+                WHERE VillainId = @villainId";
+
+    public const string DeleteVillainById =
+        @"DELETE FROM Villains
+           WHERE Id = @villainId";
 }

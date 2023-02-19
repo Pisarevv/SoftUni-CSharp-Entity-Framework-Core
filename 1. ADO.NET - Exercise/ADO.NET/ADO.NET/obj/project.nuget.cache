@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "cYZRrpom6fgOtHqjZxxoBRSk02lF6o+T70BNLh13JeII4Di1d49u8qDjn1vSFR4cvyu+lnv1U7PjQsgBzA/QmA==",
+  "dgSpecHash": "B1+chkDMK9H5LVTlWGxvrmU9hsyqVpe/EtzledJk6De0pVQj0CVmLbS3kn5zBroo/vBWCFQodU21+1CThnY3uQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\bghrpis\\Desktop\\Work\\Softuni Entity Framework Core\\1. ADO.NET - Exercise\\ADO.NET\\ADO.NET\\P02. Villian Names.csproj",
+  "projectFilePath": "C:\\Users\\bghrpis\\Desktop\\Work\\Softuni Entity Framework Core\\1. ADO.NET - Exercise\\ADO.NET\\ADO.NET\\ADONetExercise.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\bghrpis\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\bghrpis\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

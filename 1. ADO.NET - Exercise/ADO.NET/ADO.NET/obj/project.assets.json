@@ -2008,9 +2008,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\bghrpis\\Desktop\\Work\\Softuni Entity Framework Core\\1. ADO.NET - Exercise\\ADO.NET\\ADO.NET\\P02. Villian Names.csproj",
-      "projectName": "P02. Villian Names",
-      "projectPath": "C:\\Users\\bghrpis\\Desktop\\Work\\Softuni Entity Framework Core\\1. ADO.NET - Exercise\\ADO.NET\\ADO.NET\\P02. Villian Names.csproj",
+      "projectUniqueName": "C:\\Users\\bghrpis\\Desktop\\Work\\Softuni Entity Framework Core\\1. ADO.NET - Exercise\\ADO.NET\\ADO.NET\\ADONetExercise.csproj",
+      "projectName": "ADONetExercise",
+      "projectPath": "C:\\Users\\bghrpis\\Desktop\\Work\\Softuni Entity Framework Core\\1. ADO.NET - Exercise\\ADO.NET\\ADO.NET\\ADONetExercise.csproj",
       "packagesPath": "C:\\Users\\bghrpis\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\bghrpis\\Desktop\\Work\\Softuni Entity Framework Core\\1. ADO.NET - Exercise\\ADO.NET\\ADO.NET\\obj\\",
       "projectStyle": "PackageReference",
