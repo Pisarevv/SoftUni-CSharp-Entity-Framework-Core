@@ -22,12 +22,13 @@ internal class Program
 
         //var result = await AddMinionVillianAsync(sqlConnection, sqlTransaction, minionInformation[1], villainInformation[1]);
 
-        int id = int.Parse(Console.ReadLine());
 
-        var result = await RemoveVillainById(sqlConnection, sqlTransaction, id);
+        //int id = int.Parse(Console.ReadLine());
 
-        Console.WriteLine(result);
+        //var result = await RemoveVillainById(sqlConnection, sqlTransaction, id);
 
+        //Console.WriteLine(result);
+        await GetMinionNames(sqlConnection,sqlTransaction);
 
 
 
@@ -328,5 +329,37 @@ internal class Program
 
 
 
+    }
+
+    //Problem 7
+    static async Task GetMinionNames(SqlConnection sqlConnection, SqlTransaction sqlTransaction)
+    {
+
+        SqlCommand sqlCommand = new SqlCommand(SqlQueries.GetMinionsNames, sqlConnection, sqlTransaction);
+        IList<string> minionNames = new List<string>();
+
+        IList<string> sortedMinionNames = new List<string>();
+
+        SqlDataReader reader = await sqlCommand.ExecuteReaderAsync();
+
+        while (reader.Read())
+        {
+            minionNames.Add(reader["Name"].ToString());
+        }
+
+        for (int i = 0; i < minionNames.Count/2 ; i++)
+        {
+            sortedMinionNames.Add(minionNames[i]);
+            sortedMinionNames.Add(minionNames[minionNames.Count - 1 - i]);
+
+        }
+
+        if(minionNames.Count %2 != 0)
+        {
+            sortedMinionNames.Add(minionNames[minionNames.Count / 2]);
+        }
+
+        Console.WriteLine(string.Join(", ", minionNames));
+        Console.WriteLine(string.Join(", ", sortedMinionNames));
     }
 }

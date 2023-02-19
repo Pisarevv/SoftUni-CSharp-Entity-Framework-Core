@@ -66,4 +66,7 @@ internal static class SqlQueries
     public const string DeleteVillainById =
         @"DELETE FROM Villains
            WHERE Id = @villainId";
+
+    public const string GetMinionsNames =
+        @"SELECT Name FROM Minions";
 }
