@@ -28,7 +28,14 @@ internal class Program
         //var result = await RemoveVillainById(sqlConnection, sqlTransaction, id);
 
         //Console.WriteLine(result);
-        await GetMinionNames(sqlConnection,sqlTransaction);
+        //await GetMinionNames(sqlConnection,sqlTransaction);
+
+        string minionsIds = Console.ReadLine();
+
+        await UpdateMinionNamesCasingAndAgeById(sqlConnection,sqlTransaction,minionsIds);
+
+        await PrintMinions(sqlConnection,sqlTransaction);
+
 
 
 
@@ -361,5 +368,45 @@ internal class Program
 
         Console.WriteLine(string.Join(", ", minionNames));
         Console.WriteLine(string.Join(", ", sortedMinionNames));
+    }
+
+    //Problem 8
+    static async Task UpdateMinionNamesCasingAndAgeById (SqlConnection sqlConnection, SqlTransaction sqlTransaction, string minionsInfo)
+    {
+        string[] minionsIds = minionsInfo.Split(" ",StringSplitOptions.RemoveEmptyEntries).ToArray();
+
+        SqlCommand updateCmd = new SqlCommand(SqlQueries.UpdateMinions, sqlConnection, sqlTransaction);
+
+        foreach(string id in minionsIds)
+        {
+            updateCmd.Parameters.AddWithValue("@Id", id);
+            await updateCmd.ExecuteNonQueryAsync();
+            updateCmd.Parameters.Clear();
+        }
+
+        sqlTransaction.Commit();
+
+
+    }
+
+    static async Task PrintMinions (SqlConnection sqlConnection, SqlTransaction sqlTransaction)
+    {
+        ICollection<string> minionsInfo = new Collection<string>();
+        SqlCommand getNamesAndAgeCmd = new SqlCommand(SqlQueries.GetMinionsNameAndAge, sqlConnection, sqlTransaction);
+
+        SqlDataReader reader = await getNamesAndAgeCmd.ExecuteReaderAsync();
+
+        while (reader.Read())
+        {
+            string currentMinion = $"{reader["Name"]} {reader["Age"]}";
+            minionsInfo.Add(currentMinion);
+        }
+
+        foreach (string minion in minionsInfo)
+        {
+            Console.WriteLine(minion);
+        }
+        
+       
     }
 }

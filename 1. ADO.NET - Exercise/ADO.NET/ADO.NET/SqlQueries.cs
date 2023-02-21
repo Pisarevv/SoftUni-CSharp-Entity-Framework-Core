@@ -69,4 +69,12 @@ internal static class SqlQueries
 
     public const string GetMinionsNames =
         @"SELECT Name FROM Minions";
+
+    public const string UpdateMinions =
+        @"UPDATE Minions
+             SET Name = UPPER(LEFT(Name, 1)) + SUBSTRING(Name, 2, LEN(Name)), Age += 1
+           WHERE Id = @Id";
+
+    public const string GetMinionsNameAndAge =
+        @"SELECT Name, Age FROM Minions";
 }
