@@ -77,4 +77,7 @@ internal static class SqlQueries
 
     public const string GetMinionsNameAndAge =
         @"SELECT Name, Age FROM Minions";
+
+    public const string GetMinionNameAndAgeById =
+        @"SELECT Name, Age FROM Minions WHERE Id = @Id";
 }

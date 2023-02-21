@@ -30,13 +30,15 @@ internal class Program
         //Console.WriteLine(result);
         //await GetMinionNames(sqlConnection,sqlTransaction);
 
-        string minionsIds = Console.ReadLine();
+        string minionId = Console.ReadLine();
 
-        await UpdateMinionNamesCasingAndAgeById(sqlConnection,sqlTransaction,minionsIds);
+        //await UpdateMinionNamesCasingAndAgeById(sqlConnection,sqlTransaction,minionsIds);
 
-        await PrintMinions(sqlConnection,sqlTransaction);
+        //await PrintMinions(sqlConnection,sqlTransaction);
 
+        await IncreaseAgeWithStoredProcedure(sqlConnection, sqlTransaction, minionId);
 
+        await PrintMinionNameAndAge(sqlConnection,minionId);
 
 
     }
@@ -408,5 +410,46 @@ internal class Program
         }
         
        
+    }
+
+    //Problem 9
+    static async Task IncreaseAgeWithStoredProcedure (SqlConnection sqlConnection, SqlTransaction sqlTransaction, string id)
+    {
+        try
+        {
+            SqlCommand updateAgeCommand = new SqlCommand()
+            {
+                CommandText = "usp_GetOlder",
+                Connection = sqlConnection,
+                Transaction = sqlTransaction,
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
+            updateAgeCommand.Parameters.AddWithValue("@id", id);
+           
+            await updateAgeCommand.ExecuteNonQueryAsync();
+            await sqlTransaction.CommitAsync();
+
+
+        }
+        catch (Exception)
+        {
+            await sqlTransaction.RollbackAsync();
+            throw;
+        }
+    }
+
+    static async Task PrintMinionNameAndAge(SqlConnection sqlConnection, string id)
+    {
+        SqlCommand sqlCommand = new SqlCommand(SqlQueries.GetMinionNameAndAgeById, sqlConnection);
+        sqlCommand.Parameters.AddWithValue("@Id", id);
+
+        SqlDataReader sqlDataReader = await sqlCommand.ExecuteReaderAsync();
+
+        while(sqlDataReader.Read())
+        {
+            Console.WriteLine($"{sqlDataReader["Name"]} - {sqlDataReader["Age"]} years old");
+        }
+
+    
     }
 }
