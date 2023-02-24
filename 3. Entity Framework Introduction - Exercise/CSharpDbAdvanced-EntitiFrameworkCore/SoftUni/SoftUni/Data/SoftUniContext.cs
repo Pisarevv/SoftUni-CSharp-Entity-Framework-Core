@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+
 using SoftUni.Models;
 
 namespace SoftUni.Data;
@@ -18,17 +19,22 @@ namespace SoftUni.Data;
         }
 
         public virtual DbSet<Address> Addresses { get; set; } = null!;
+
         public virtual DbSet<Department> Departments { get; set; } = null!;
+
         public virtual DbSet<Employee> Employees { get; set; } = null!;
+
         public virtual DbSet<Project> Projects { get; set; } = null!;
+
         public virtual DbSet<Town> Towns { get; set; } = null!;
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 
-                optionsBuilder.UseSqlServer(".\\SQLEXPRESS;Database=SoftUni; Integrated Security=true; TrustServerCertificate = true");
+                optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=SoftUni; Integrated Security=true; TrustServerCertificate = true");
             }
         }
 
@@ -144,13 +150,13 @@ namespace SoftUni.Data;
             modelBuilder.Entity<EmployeeProject>(entity =>
             {
                 //Generate composite PK
-                entity.HasKey(pk => new { pk.EmpolyeeId, pk.ProjectId });
+                entity.HasKey(pk => new { pk.EmployeeId, pk.ProjectId });
 
                 // Configurate foreign keys
                 entity
                  .HasOne(ep => ep.Employee)
                  .WithMany(e => e.EmployeesProjects)
-                 .HasForeignKey(ep => ep.EmpolyeeId);
+                 .HasForeignKey(ep => ep.EmployeeId);
 
                 entity
                      .HasOne(ep => ep.Project)
@@ -158,9 +164,9 @@ namespace SoftUni.Data;
                      .HasForeignKey(ep => ep.ProjectId);
             });
 
-            OnModelCreatingPartial(modelBuilder);
+      
         }
 
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+        
     }
 

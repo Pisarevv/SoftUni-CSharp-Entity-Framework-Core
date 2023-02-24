@@ -61,11 +61,9 @@ C:\Users\bghrpis\Desktop\Work\Softuni Entity Framework Core\3. Entity Framework 
 C:\Users\bghrpis\Desktop\Work\Softuni Entity Framework Core\3. Entity Framework Introduction - Exercise\CSharpDbAdvanced-EntitiFrameworkCore\SoftUni\SoftUni\bin\Debug\net6.0\SoftUni.runtimeconfig.json
 C:\Users\bghrpis\Desktop\Work\Softuni Entity Framework Core\3. Entity Framework Introduction - Exercise\CSharpDbAdvanced-EntitiFrameworkCore\SoftUni\SoftUni\bin\Debug\net6.0\SoftUni.dll
 C:\Users\bghrpis\Desktop\Work\Softuni Entity Framework Core\3. Entity Framework Introduction - Exercise\CSharpDbAdvanced-EntitiFrameworkCore\SoftUni\SoftUni\bin\Debug\net6.0\SoftUni.pdb
-C:\Users\bghrpis\Desktop\Work\Softuni Entity Framework Core\3. Entity Framework Introduction - Exercise\CSharpDbAdvanced-EntitiFrameworkCore\SoftUni\SoftUni\bin\Debug\net6.0\Humanizer.dll
 C:\Users\bghrpis\Desktop\Work\Softuni Entity Framework Core\3. Entity Framework Introduction - Exercise\CSharpDbAdvanced-EntitiFrameworkCore\SoftUni\SoftUni\bin\Debug\net6.0\Microsoft.Data.SqlClient.dll
 C:\Users\bghrpis\Desktop\Work\Softuni Entity Framework Core\3. Entity Framework Introduction - Exercise\CSharpDbAdvanced-EntitiFrameworkCore\SoftUni\SoftUni\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
 C:\Users\bghrpis\Desktop\Work\Softuni Entity Framework Core\3. Entity Framework Introduction - Exercise\CSharpDbAdvanced-EntitiFrameworkCore\SoftUni\SoftUni\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
-C:\Users\bghrpis\Desktop\Work\Softuni Entity Framework Core\3. Entity Framework Introduction - Exercise\CSharpDbAdvanced-EntitiFrameworkCore\SoftUni\SoftUni\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
 C:\Users\bghrpis\Desktop\Work\Softuni Entity Framework Core\3. Entity Framework Introduction - Exercise\CSharpDbAdvanced-EntitiFrameworkCore\SoftUni\SoftUni\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.dll
 C:\Users\bghrpis\Desktop\Work\Softuni Entity Framework Core\3. Entity Framework Introduction - Exercise\CSharpDbAdvanced-EntitiFrameworkCore\SoftUni\SoftUni\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.SqlServer.dll
 C:\Users\bghrpis\Desktop\Work\Softuni Entity Framework Core\3. Entity Framework Introduction - Exercise\CSharpDbAdvanced-EntitiFrameworkCore\SoftUni\SoftUni\bin\Debug\net6.0\Microsoft.Extensions.Caching.Abstractions.dll

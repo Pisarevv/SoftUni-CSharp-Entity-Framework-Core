@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SoftUni.Models;
 
-    public partial class Address
+    public class Address
     {
         public Address()
         {

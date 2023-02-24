@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace SoftUni.Models;
-    public partial class Project
+    public class Project
     {
         public Project()
         {
