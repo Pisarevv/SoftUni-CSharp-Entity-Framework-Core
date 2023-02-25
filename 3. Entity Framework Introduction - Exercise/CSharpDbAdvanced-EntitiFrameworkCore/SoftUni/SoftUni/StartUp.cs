@@ -12,7 +12,7 @@ public class StartUp
     {
         SoftUniContext context = new SoftUniContext();
 
-        string result = GetEmployee147(context);
+        string result = GetDepartmentsWithMoreThan5Employees(context);
 
         Console.WriteLine(result);
 
@@ -225,6 +225,46 @@ public class StartUp
             foreach(var e in projects)
             {
                 sb.AppendLine($"{e}");
+            }
+        }
+
+        return sb.ToString().TrimEnd();
+    }
+
+    //Problem 10
+    public static string GetDepartmentsWithMoreThan5Employees(SoftUniContext context)
+    {
+        var sb = new StringBuilder();
+
+        var departments = context.Departments
+                          .AsNoTracking()
+                          .Where(d => d.Employees.Count() > 5)
+                          .OrderBy(d => d.Employees.Count())
+                          .ThenBy(d => d.Name)
+                          .Select(x => new
+                          {
+                              DepName = x.Name,
+                              ManagerFirstName = x.Manager.FirstName,
+                              ManagerLastName = x.Manager.LastName,
+                              Employees = x.Employees
+                                          .OrderBy(e => e.FirstName)
+                                          .ThenBy(e => e.LastName)
+                                          .Select(e => new
+                                          {
+                                              e.FirstName,
+                                              e.LastName,
+                                              e.JobTitle
+                                          })
+                                          .ToList()
+                                         
+                          });
+
+        foreach(var d in departments)
+        {
+            sb.AppendLine($"{d.DepName} - {d.ManagerFirstName} {d.ManagerLastName}");
+            foreach(var e in d.Employees)
+            {
+                sb.AppendLine($"{e.FirstName} {e.LastName} - {e.JobTitle}");
             }
         }
 
