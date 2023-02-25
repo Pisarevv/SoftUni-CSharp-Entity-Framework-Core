@@ -12,7 +12,7 @@ public class StartUp
     {
         SoftUniContext context = new SoftUniContext();
 
-        string result = GetAddressesByTown(context);
+        string result = GetEmployee147(context);
 
         Console.WriteLine(result);
 
@@ -198,6 +198,34 @@ public class StartUp
         foreach (var a in addresses)
         {
             sb.AppendLine($"{a.AddressText}, {a.TownName} - {a.EmployeeCount} employees");
+        }
+
+        return sb.ToString().TrimEnd();
+    }
+
+    //Problem 9
+    public static string GetEmployee147(SoftUniContext context)
+    {
+        var sb = new StringBuilder();
+        Employee ?employee147 = context.Employees
+                          .AsNoTracking()
+                          .FirstOrDefault(e => e.EmployeeId == 147);
+        var projects = context.EmployeesProjects
+                       .AsNoTracking()
+                       .Where(e => e.EmployeeId == 147)
+                       .OrderBy(p => p.Project.Name)
+                       .Select(p => p.Project.Name)
+                       .ToList();
+                       
+                       
+
+        if(employee147 != null)
+        {
+            sb.AppendLine($"{employee147.FirstName} {employee147.LastName} - {employee147.JobTitle}");
+            foreach(var e in projects)
+            {
+                sb.AppendLine($"{e}");
+            }
         }
 
         return sb.ToString().TrimEnd();
