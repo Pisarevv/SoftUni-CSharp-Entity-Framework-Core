@@ -12,7 +12,7 @@ public class StartUp
     {
         SoftUniContext context = new SoftUniContext();
 
-        string result = GetLatestProjects(context);
+        string result = IncreaseSalaries(context);
 
         Console.WriteLine(result);
 
@@ -298,5 +298,37 @@ public class StartUp
         }       
         
         return sb.ToString().TrimEnd();
+    }
+
+    //Problem 12
+    public static string IncreaseSalaries(SoftUniContext context)
+    {
+        string[] departemntsToIncSalary = new string[4]
+        {
+          "Engineering",
+          "Tool Design",
+          "Marketing",
+          "Information Services"
+        };
+
+        var sb = new StringBuilder();
+
+        var employees = context.Employees
+                     .Where(e => departemntsToIncSalary.Contains(e.Department.Name))
+                     .OrderBy(e => e.FirstName)
+                     .ThenBy(e => e.LastName)
+                     .Select(e => e)
+                     .ToList();
+
+       foreach(var e in employees)
+        {
+            e.Salary = e.Salary * 1.12m;
+            sb.AppendLine($"{e.FirstName} {e.LastName} (${e.Salary:F2})");
+        }
+
+       //context.SaveChanges();
+
+        return sb.ToString();
+
     }
 }
