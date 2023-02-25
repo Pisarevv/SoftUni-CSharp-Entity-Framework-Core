@@ -183,10 +183,10 @@ public class StartUp
 
         var addresses = context.Addresses
                         .AsNoTracking()
-                        .Take(10)
-                        .OrderByDescending(a => a.Employees.Count)
+                        .OrderByDescending(a => a.Employees.Count())
                         .ThenBy(a => a.Town.Name)
                         .ThenBy(a => a.AddressText)
+                        .Take(10)
                         .Select(a => new
                         {
                             a.AddressText,
