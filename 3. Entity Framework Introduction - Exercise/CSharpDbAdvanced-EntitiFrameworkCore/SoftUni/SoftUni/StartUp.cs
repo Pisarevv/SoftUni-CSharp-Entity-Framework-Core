@@ -12,7 +12,7 @@ public class StartUp
     {
         SoftUniContext context = new SoftUniContext();
 
-        string result = GetDepartmentsWithMoreThan5Employees(context);
+        string result = GetLatestProjects(context);
 
         Console.WriteLine(result);
 
@@ -111,14 +111,14 @@ public class StartUp
             TownId = 4
         };
 
-        person.Address = newAddress;
+        person!.Address = newAddress;
 
         context.SaveChanges();
 
         var result = context.Employees
                      .AsNoTracking()
                      .OrderByDescending(e => e.AddressId)
-                     .Select(a => a.Address.AddressText)
+                     .Select(a => a.Address!.AddressText)
                      .Take(10)
                      .ToList();
 
@@ -146,10 +146,10 @@ public class StartUp
                          e.LastName,
                          e.Manager,
                          Projects = e.EmployeesProjects
-                                    .Where(p => p.Project.StartDate.Year >= 2001 && p.Project.StartDate.Year <= 2003)
+                                    .Where(p => p.Project!.StartDate.Year >= 2001 && p.Project.StartDate.Year <= 2003)
                                     .Select(p => new
                                     {
-                                        Name = p.Project.Name,
+                                        Name = p.Project!.Name,
                                         StartDate = p.Project.StartDate.ToString("M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture),
                                         EndDate = p.Project.EndDate != null 
                                         ? p.Project.EndDate.Value.ToString("M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture)
@@ -164,7 +164,7 @@ public class StartUp
 
         foreach(var employee in empWithProjects)
         {
-            sb.AppendLine($"{employee.FirstName} {employee.LastName} - Manager: {employee.Manager.FirstName} {employee.Manager.LastName}");
+            sb.AppendLine($"{employee.FirstName} {employee.LastName} - Manager: {employee.Manager!.FirstName} {employee.Manager.LastName}");
 
             foreach (var p in employee.Projects)
             {
@@ -184,13 +184,13 @@ public class StartUp
         var addresses = context.Addresses
                         .AsNoTracking()
                         .OrderByDescending(a => a.Employees.Count())
-                        .ThenBy(a => a.Town.Name)
+                        .ThenBy(a => a.Town!.Name)
                         .ThenBy(a => a.AddressText)
                         .Take(10)
                         .Select(a => new
                         {
                             a.AddressText,
-                            TownName = a.Town.Name,
+                            TownName = a.Town!.Name,
                             EmployeeCount = a.Employees.Count()
                         })
                         .ToList();
@@ -213,8 +213,8 @@ public class StartUp
         var projects = context.EmployeesProjects
                        .AsNoTracking()
                        .Where(e => e.EmployeeId == 147)
-                       .OrderBy(p => p.Project.Name)
-                       .Select(p => p.Project.Name)
+                       .OrderBy(p => p.Project!.Name)
+                       .Select(p => p.Project!.Name)
                        .ToList();
                        
                        
@@ -268,6 +268,35 @@ public class StartUp
             }
         }
 
+        return sb.ToString().TrimEnd();
+    }
+
+    //Problem 11
+    public static string GetLatestProjects(SoftUniContext context)
+    {
+        var sb = new StringBuilder();
+
+        var projects = context.Projects
+                      .AsNoTracking()
+                      .OrderByDescending(p => p.StartDate)
+                      .Take(10)
+                      .OrderBy(p => p.Name)
+                      .Select(p => new
+                      {
+                          p.Name,
+                          p.Description,
+                          StartDate  = p.StartDate.ToString("M/d/yyyy h:mm:ss tt",CultureInfo.InvariantCulture)
+                      });
+
+        foreach(var p in projects)
+        {
+            sb.AppendLine(p.Name +
+                         Environment.NewLine +
+                         p.Description +
+                         Environment.NewLine +
+                         p.StartDate);
+        }       
+        
         return sb.ToString().TrimEnd();
     }
 }
