@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SoftUni.Data;
+using SoftUni.Models;
 using System.Text;
 
 namespace SoftUni;
@@ -10,7 +11,7 @@ public class StartUp
     {
         SoftUniContext context = new SoftUniContext();
 
-        string result = GetEmployeesFromResearchAndDevelopment(context);
+        string result = AddNewAddressToEmployee(context);
 
         Console.WriteLine(result);
 
@@ -90,6 +91,39 @@ public class StartUp
         foreach( var e in result)
         {
             sb.AppendLine($"{e.FirstName} {e.LastName} from {e.DepName} - ${e.Salary:F2}");
+        }
+
+        return sb.ToString();
+    }
+
+    //Problem 6
+    public static string AddNewAddressToEmployee(SoftUniContext context)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        Employee? person = context.Employees
+                     .FirstOrDefault(e => e.LastName == "Nakov");
+
+        var newAddress = new Address
+        {
+            AddressText = "Vitoshka 15",
+            TownId = 4
+        };
+
+        person.Address = newAddress;
+
+        context.SaveChanges();
+
+        var result = context.Employees
+                     .AsNoTracking()
+                     .OrderByDescending(e => e.AddressId)
+                     .Select(a => a.Address.AddressText)
+                     .Take(10)
+                     .ToList();
+
+        foreach(var address  in result)
+        {
+            sb.AppendLine(address);
         }
 
         return sb.ToString();
