@@ -12,7 +12,7 @@ public class StartUp
     {
         SoftUniContext context = new SoftUniContext();
 
-        string result = IncreaseSalaries(context);
+        string result = GetEmployeesByFirstNameStartingWithSa(context);
 
         Console.WriteLine(result);
 
@@ -330,5 +330,32 @@ public class StartUp
 
         return sb.ToString();
 
+    }
+
+    //Problem 13
+    public static string GetEmployeesByFirstNameStartingWithSa(SoftUniContext context)
+    {
+        var sb = new StringBuilder();
+
+        var employees = context.Employees
+                        .AsNoTracking()
+                        .Where(e => e.FirstName.ToLower().StartsWith("sa"))
+                        .OrderBy(e => e.FirstName)
+                        .ThenBy (e => e.LastName)
+                        .Select(e => new
+                        {
+                            e.FirstName,
+                            e.LastName,
+                            e.JobTitle,
+                            e.Salary
+                        })
+                        .ToArray();
+
+        foreach(var e in employees)
+        {
+            sb.AppendLine($"{e.FirstName} {e.LastName} - {e.JobTitle} - (${e.Salary:F2})");
+        }
+
+        return sb.ToString();
     }
 }
