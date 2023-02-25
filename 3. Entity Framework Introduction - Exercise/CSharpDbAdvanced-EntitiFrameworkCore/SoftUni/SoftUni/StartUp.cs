@@ -12,7 +12,7 @@ public class StartUp
     {
         SoftUniContext context = new SoftUniContext();
 
-        string result = GetEmployeesByFirstNameStartingWithSa(context);
+        string result = DeleteProjectById(context);
 
         Console.WriteLine(result);
 
@@ -357,5 +357,38 @@ public class StartUp
         }
 
         return sb.ToString();
+    }
+
+    //Problem 14
+    public static string DeleteProjectById(SoftUniContext context)
+    {
+        var sb = new StringBuilder();
+        int projectToDeleteId = 4;
+        var empProjectsToDelete =
+            context.EmployeesProjects.
+            Where(e => e.Project.ProjectId == projectToDeleteId)
+            .Select(ep => ep)
+            .ToList();
+
+        empProjectsToDelete.RemoveAll(e => e.ProjectId == 4);
+
+
+        var projectToDelete = context.Projects
+                              .FirstOrDefault(e => e.ProjectId == projectToDeleteId);
+
+        context.Projects.Remove(projectToDelete);
+
+        var projectsToDisplay = context.Projects
+                                .Take(10)
+                                .Select(p => p.Name)
+                                .ToList();
+                           
+        foreach(var p  in projectsToDisplay)
+        {
+            sb.AppendLine(p);
+        }
+
+        return sb.ToString();
+       
     }
 }
