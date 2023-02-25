@@ -10,14 +10,14 @@ public class StartUp
     {
         SoftUniContext context = new SoftUniContext();
 
-        string result = GetEmployeesWithSalaryOver50000(context);
+        string result = GetEmployeesFromResearchAndDevelopment(context);
 
         Console.WriteLine(result);
 
     }
 
 
-    //Problem 1
+    //Problem 3
     public static string GetEmployeesFullInformation(SoftUniContext context)
     {
         StringBuilder sb = new StringBuilder();
@@ -45,7 +45,7 @@ public class StartUp
                                      
     }
 
-    //Problem 2
+    //Problem 4
     public static string GetEmployeesWithSalaryOver50000(SoftUniContext context)
     {
         StringBuilder sb = new StringBuilder();
@@ -63,6 +63,33 @@ public class StartUp
         foreach ( var e in result)
         {
             sb.AppendLine($"{e.FirstName} - {e.Salary:f2}");
+        }
+
+        return sb.ToString();
+    }
+
+    //Problem 5
+    public static string GetEmployeesFromResearchAndDevelopment(SoftUniContext context)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        var result = context.Employees
+                     .AsNoTracking()
+                     .Where(d => d.Department.Name == "Research and Development")
+                     .OrderBy(e => e.Salary)
+                     .ThenByDescending(e => e.FirstName)
+                     .Select(e => new
+                     {
+                         e.FirstName,
+                         e.LastName,
+                         DepName = e.Department.Name,
+                         e.Salary
+                     })
+                     .ToArray();
+
+        foreach( var e in result)
+        {
+            sb.AppendLine($"{e.FirstName} {e.LastName} from {e.DepName} - ${e.Salary:F2}");
         }
 
         return sb.ToString();
