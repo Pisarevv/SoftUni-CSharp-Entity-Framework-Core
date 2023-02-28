@@ -27,5 +27,10 @@ public class ValidationConstants
     public const int MaxGameResultLength = 5;
 
     //Bet
-    public const int MaxPredictionLength = 5; 
+    public const int MaxPredictionLength = 5;
+
+    //User
+    public const int MaxUsernameLength = 36;
+    public const int MaxPasswordLength = 32;
+    public const int MaxEmailLength = 64;
 }
