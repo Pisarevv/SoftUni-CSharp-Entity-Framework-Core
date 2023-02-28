@@ -10,4 +10,7 @@ public class ValidationConstants
 
     //Resource
     public const int ResourceNameMaxLength = 50;
+
+    //Homework
+    public const int HomeworkContentMaxLenghth = 2056; 
 }

@@ -18,6 +18,12 @@ public class StudentSystemContext : DbContext
 
     }
 
+    public DbSet<Student> Students { get; set; } = null!;
+    public DbSet<Course> Courses { get; set; } = null!;
+    public DbSet<Homework> Homeworks { get; set; } = null!;
+    public DbSet<StudentCourse> StudentsCourses { get; set; } = null!;
+    public DbSet<Resource> Resources { get; set; } = null!;
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
@@ -42,6 +48,11 @@ public class StudentSystemContext : DbContext
         {
             entity.Property(p => p.ResourceId)
             .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<StudentCourse>(entity =>
+        {
+            entity.HasKey(sc => new { sc.StudentId, sc.CourseId });
         });
     }
 }

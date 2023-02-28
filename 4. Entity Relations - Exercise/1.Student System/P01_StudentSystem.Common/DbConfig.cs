@@ -2,5 +2,5 @@
 
 public class DbConfig
 {
-    public const string ConnectionString = @"Server=.\SQLEXPRESS;Database=SoftUni; Integrated Security=true; TrustServerCertificate = true";
+    public const string ConnectionString = @"Server=.\SQLEXPRESS;Database=StudentSystem;Integrated Security=true;TrustServerCertificate = true";
 }
