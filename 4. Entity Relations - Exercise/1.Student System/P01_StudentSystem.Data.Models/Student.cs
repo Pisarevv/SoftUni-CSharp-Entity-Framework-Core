@@ -5,10 +5,10 @@ using Common;
 public class Student
 {
     [Key]
-    public int Id { get; set; }
+    public int StudentId { get; set; }
 
     [Required]
-    [MaxLength(ValidationConstants.StudentNameMaxLenght)]
+    [MaxLength(ValidationConstants.StudentNameMaxLength)]
     public string Name { get; set; } = null!;
 
     [StringLength(10)]

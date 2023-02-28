@@ -37,5 +37,11 @@ public class StudentSystemContext : DbContext
             entity.Property(p => p.PhoneNumber)
             .IsUnicode(false);
         });
+
+        modelBuilder.Entity<Resource>(entity =>
+        {
+            entity.Property(p => p.ResourceId)
+            .IsUnicode(false);
+        });
     }
 }

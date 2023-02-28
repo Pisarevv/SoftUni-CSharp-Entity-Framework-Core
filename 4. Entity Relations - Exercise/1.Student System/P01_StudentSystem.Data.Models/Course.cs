@@ -8,7 +8,7 @@ public class Course
     [Key]
     public int CourseId { get; set; }
 
-    [MaxLength(ValidationConstants.CourseNameMaxLenght)]
+    [MaxLength(ValidationConstants.CourseNameMaxLength)]
     public string Name { get; set; } = null!;
 
     public string? Description { get; set; }
