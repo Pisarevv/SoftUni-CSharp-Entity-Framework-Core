@@ -1,10 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using P03_FootballBetting.Common;
+using System.ComponentModel.DataAnnotations;
 
 namespace P03_FootballBetting.Data.Models;
-internal class Town
+
+
+public class Town
 {
+    [Key]
+    public int TownId { get; set; }
+
+    [MaxLength(ValidationConstants.MaxTownNameLength)]
+    public string Name { get; set; } = null!;
+
+    public int CountryId { get; set; }
 }
