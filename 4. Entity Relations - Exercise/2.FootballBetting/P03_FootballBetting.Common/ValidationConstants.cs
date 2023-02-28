@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace P03_FootballBetting.Common;
 
-namespace P03_FootballBetting.Common;
-internal class ValidationConstants
+public class ValidationConstants
 {
+    //Team
+    public const int MaxTeamNameLength = 100;
+    public const int MaxLogoUrlLength = 2056;
 }
