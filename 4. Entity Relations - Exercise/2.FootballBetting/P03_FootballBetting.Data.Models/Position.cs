@@ -1,10 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace P03_FootballBetting.Data.Models;
 
-namespace P03_FootballBetting.Data.Models;
-internal class Position
+using System.ComponentModel.DataAnnotations;
+using Common;
+
+public class Position
 {
+    [Key]
+    public int PositionId { get; set; }
+
+    [MaxLength(ValidationConstants.MaxPositionNameLength)]
+    public string Name { get; set; } = null!;
 }

@@ -1,10 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace P03_FootballBetting.Data.Models;
 
-namespace P03_FootballBetting.Data.Models;
-internal class Country
+using P03_FootballBetting.Common;
+using System.ComponentModel.DataAnnotations;
+
+public class Country
 {
+    [Key]
+    public int CountryId { get; set; }
+
+    [MaxLength(ValidationConstants.MaxCountryNameLength)]
+    public string Name { get; set; } = null!;
 }
