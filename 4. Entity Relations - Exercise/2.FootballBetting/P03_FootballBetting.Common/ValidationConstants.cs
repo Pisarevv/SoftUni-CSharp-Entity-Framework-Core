@@ -9,4 +9,7 @@ public class ValidationConstants
 
     //Color
     public const int MaxColorNameLength = 10;
+
+    //Town
+    public const int MaxTownNameLength = 10;
 }
