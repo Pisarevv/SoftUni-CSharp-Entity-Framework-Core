@@ -25,4 +25,7 @@ public class ValidationConstants
 
     //Game
     public const int MaxGameResultLength = 5;
+
+    //Bet
+    public const int MaxPredictionLength = 5; 
 }
