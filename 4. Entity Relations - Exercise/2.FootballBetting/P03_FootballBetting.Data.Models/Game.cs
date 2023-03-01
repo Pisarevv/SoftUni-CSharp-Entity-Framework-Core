@@ -20,12 +20,12 @@ public class Game
     [ForeignKey(nameof(HomeTeam))]
     public int HomeTeamId { get; set; }
 
-    public Team HomeTeam { get; set; } = null!;
+    public virtual Team HomeTeam { get; set; } = null!;
 
     [ForeignKey(nameof(AwayTeam))]
     public int AwayTeamId { get; set; }
 
-    public Team AwayTeam { get; set; } = null!;
+    public virtual Team AwayTeam { get; set; } = null!;
 
     public byte HomeTeamGoals { get; set; }
 

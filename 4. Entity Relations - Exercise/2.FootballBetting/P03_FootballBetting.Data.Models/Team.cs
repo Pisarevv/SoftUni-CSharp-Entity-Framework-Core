@@ -10,6 +10,7 @@ public class Team
     {
         this.HomeGames = new HashSet<Game>();
         this.AwayGames = new HashSet<Game>();
+
         this.Players = new HashSet<Player>();
     }
 
@@ -42,8 +43,10 @@ public class Team
 
     public Town Town { get; set; } = null!;
 
+    [InverseProperty(nameof(Game.HomeTeam))]
     public ICollection<Game> HomeGames { get; set; } = null!;
 
+    [InverseProperty(nameof(Game.AwayTeam))]
     public ICollection<Game> AwayGames { get; set; } = null!;
 
     public ICollection<Player> Players { get; set; } = null!;
