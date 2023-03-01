@@ -1,4 +1,5 @@
-﻿namespace P03_FootballBetting.Data.Models;
+﻿namespace P02_FootballBetting.Data.Models;
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Common;

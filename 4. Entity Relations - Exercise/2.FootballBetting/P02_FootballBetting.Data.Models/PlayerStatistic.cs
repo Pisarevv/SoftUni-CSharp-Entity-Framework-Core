@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace P03_FootballBetting.Data.Models;
+namespace P02_FootballBetting.Data.Models;
 
 public class PlayerStatistic
 {

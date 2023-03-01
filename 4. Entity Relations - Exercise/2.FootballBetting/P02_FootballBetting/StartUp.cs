@@ -1,16 +1,16 @@
 ﻿using System.Drawing;
 
-namespace P03_FootballBetting;
+namespace P02_FootballBetting;
 
 public class StartUp
 {
     static void Main()
     {
-      
-        
+
+
     }
 
-   
+
 
 
 

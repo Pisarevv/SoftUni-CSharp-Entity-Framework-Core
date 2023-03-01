@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace P03_FootballBetting.Data.Migrations
+namespace P02_FootballBetting.Data.Migrations
 {
     public partial class Initial : Migration
     {

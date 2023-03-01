@@ -1,4 +1,4 @@
-﻿namespace P03_FootballBetting.Common;
+﻿namespace P02_FootballBetting.Common;
 
 
 public class DbConfig

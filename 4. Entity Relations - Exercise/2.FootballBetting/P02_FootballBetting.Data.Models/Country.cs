@@ -1,6 +1,6 @@
-﻿namespace P03_FootballBetting.Data.Models;
+﻿namespace P02_FootballBetting.Data.Models;
 
-using P03_FootballBetting.Common;
+using P02_FootballBetting.Common;
 using System.ComponentModel.DataAnnotations;
 
 public class Country

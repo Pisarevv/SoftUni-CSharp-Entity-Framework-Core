@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\P03_FootballBetting.Common\P03_FootballBetting.Common.csproj" />
+    <ProjectReference Include="..\P02_FootballBetting.Common\P02_FootballBetting.Common.csproj" />
   </ItemGroup>
 
 </Project>

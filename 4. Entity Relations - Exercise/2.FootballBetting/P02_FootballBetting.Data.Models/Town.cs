@@ -1,8 +1,8 @@
-﻿using P03_FootballBetting.Common;
+﻿namespace P02_FootballBetting.Data.Models;
+
+using P02_FootballBetting.Common;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
-namespace P03_FootballBetting.Data.Models;
 
 
 public class Town

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\P03_FootballBetting.Data\P03_FootballBetting.Data.csproj" />
+    <ProjectReference Include="..\P02_FootballBetting.Data\P02_FootballBetting.Data.csproj" />
   </ItemGroup>
 
 </Project>
