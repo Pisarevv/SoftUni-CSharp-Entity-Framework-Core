@@ -7,7 +7,7 @@ public class Position
 {
     public Position()
     {
-       this.Players = new HashSet<Player>(); 
+       this.Players = new HashSet<Player>();
     }
 
     [Key]
@@ -16,5 +16,5 @@ public class Position
     [MaxLength(ValidationConstants.MaxPositionNameLength)]
     public string Name { get; set; } = null!;
 
-    ICollection<Player> Players { get; set; }
+    public virtual ICollection<Player> Players { get; set; }
 }

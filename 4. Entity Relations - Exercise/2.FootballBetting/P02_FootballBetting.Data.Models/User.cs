@@ -14,7 +14,7 @@ public class User
     public int UserId { get; set; }
 
     [MaxLength(ValidationConstants.MaxUsernameLength)]
-    public string UserName { get; set; } = null!;
+    public string Username { get; set; } = null!;
 
     [MaxLength(ValidationConstants.MaxPasswordLength)]
     public string Password { get; set; } = null!;
@@ -22,7 +22,10 @@ public class User
     [MaxLength(ValidationConstants.MaxEmailLength)]
     public string Email { get; set; } = null!;
 
+    [MaxLength(ValidationConstants.MaxUserNameLength)]
+    public string Name { get; set; }
+
     public decimal Balance { get; set; }
 
-    public ICollection<Bet> Bets { get; set; }
+    public virtual ICollection<Bet> Bets { get; set; }
 }

@@ -9,7 +9,7 @@ public class Game
 
     public Game()
     {
-        this.PlayerStatistics = new HashSet<PlayerStatistic>();
+        this.PlayersStatistics = new HashSet<PlayerStatistic>();
         this.Bets = new HashSet<Bet>();
     }
 
@@ -41,7 +41,7 @@ public class Game
     [MaxLength(ValidationConstants.MaxGameResultLength)]
     public string? Result { get; set; } 
 
-    public ICollection<PlayerStatistic> PlayerStatistics { get; set; }
+    public virtual ICollection<PlayerStatistic> PlayersStatistics { get; set; }
 
-    public ICollection<Bet> Bets { get; set; }
+    public virtual ICollection<Bet> Bets { get; set; }
 }

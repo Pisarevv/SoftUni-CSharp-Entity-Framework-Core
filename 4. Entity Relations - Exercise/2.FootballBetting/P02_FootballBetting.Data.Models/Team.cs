@@ -44,10 +44,10 @@ public class Team
     public Town Town { get; set; } = null!;
 
     [InverseProperty(nameof(Game.HomeTeam))]
-    public ICollection<Game> HomeGames { get; set; } = null!;
+    public virtual ICollection<Game> HomeGames { get; set; } = null!;
 
     [InverseProperty(nameof(Game.AwayTeam))]
-    public ICollection<Game> AwayGames { get; set; } = null!;
+    public virtual ICollection<Game> AwayGames { get; set; } = null!;
 
-    public ICollection<Player> Players { get; set; } = null!;
+    public virtual ICollection<Player> Players { get; set; } = null!;
 }

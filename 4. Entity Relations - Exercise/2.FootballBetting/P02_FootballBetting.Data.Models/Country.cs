@@ -16,5 +16,5 @@ public class Country
     [MaxLength(ValidationConstants.MaxCountryNameLength)]
     public string Name { get; set; } = null!;
 
-    public ICollection<Town> Towns { get; set; } = null!;
+    public virtual ICollection<Town> Towns { get; set; } = null!;
 }

@@ -8,7 +8,7 @@ public class Player
 {
     public Player()
     {
-        this.PlayerStatistics = new HashSet<PlayerStatistic>();
+        this.PlayersStatistics = new HashSet<PlayerStatistic>();
     }
 
     [Key]
@@ -17,8 +17,8 @@ public class Player
     [MaxLength(ValidationConstants.MaxPlayerNameLength)]
     public string Name { get; set; } = null!;
 
-    [MaxLength(ValidationConstants.MaxSquadNameLength)]
-    public string SquadName { get; set; } = null!;
+ 
+    public byte SquadNumber { get; set; }
 
     [ForeignKey(nameof(Team))]
     public int TeamId { get; set; }
@@ -32,5 +32,5 @@ public class Player
 
     public bool IsInjured { get; set; }
 
-    ICollection<PlayerStatistic> PlayerStatistics { get; set; }
+    public virtual ICollection<PlayerStatistic> PlayersStatistics { get; set; } 
 }

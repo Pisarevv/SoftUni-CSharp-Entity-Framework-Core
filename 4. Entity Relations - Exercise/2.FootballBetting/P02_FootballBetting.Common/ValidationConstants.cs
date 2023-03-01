@@ -18,7 +18,7 @@ public class ValidationConstants
 
     //Player
     public const int MaxPlayerNameLength = 100;
-    public const int MaxSquadNameLength = 100;
+
 
     //Position
     public const int MaxPositionNameLength = 20;
@@ -31,6 +31,7 @@ public class ValidationConstants
 
     //User
     public const int MaxUsernameLength = 36;
+    public const int MaxUserNameLength = 100;
     public const int MaxPasswordLength = 32;
     public const int MaxEmailLength = 64;
 }

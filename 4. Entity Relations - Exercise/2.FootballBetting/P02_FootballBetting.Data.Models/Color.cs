@@ -18,8 +18,8 @@ public class Color
     public string Name { get; set; } = null!;
 
     [InverseProperty(nameof(Team.PrimaryKitColor))]
-    public ICollection<Team> PrimaryKitTeams { get; set; }
+    public virtual ICollection<Team> PrimaryKitTeams { get; set; }
 
     [InverseProperty(nameof(Team.SecondaryKitColor))]
-    public ICollection<Team> SecondaryKitTeams { get; set; }
+    public virtual ICollection<Team> SecondaryKitTeams { get; set; }
 }

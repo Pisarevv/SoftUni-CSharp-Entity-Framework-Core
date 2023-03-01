@@ -23,5 +23,5 @@ public class Town
 
     public Country Country { get; set; } = null!;
 
-    public ICollection<Team> Teams { get; set; } = null!;
+    public virtual ICollection<Team> Teams { get; set; } = null!;
 }
