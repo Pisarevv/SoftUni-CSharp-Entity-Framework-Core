@@ -1,5 +1,6 @@
 ﻿namespace P03_FootballBetting.Data.Models;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Common;
 public class Bet
 {
@@ -15,7 +16,8 @@ public class Bet
 
     public int UserId { get; set; }
 
+    [ForeignKey(nameof(GameId))]
     public int GameId { get; set; }
 
-    //TODO: Add relations
+    public Game Game { get; set; } = null!;
 }

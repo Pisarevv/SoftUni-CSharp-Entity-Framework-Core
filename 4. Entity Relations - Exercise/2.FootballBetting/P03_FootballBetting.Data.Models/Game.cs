@@ -11,6 +11,7 @@ public class Game
     public Game()
     {
         this.PlayerStatistics = new HashSet<PlayerStatistic>();
+        this.Bets = new HashSet<Bet>();
     }
 
     [Key]
@@ -42,4 +43,6 @@ public class Game
     public string? Result { get; set; } 
 
     public ICollection<PlayerStatistic> PlayerStatistics { get; set; }
+
+    public ICollection<Bet> Bets { get; set; }
 }
