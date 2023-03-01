@@ -1,6 +1,7 @@
 ﻿namespace P03_FootballBetting.Data.Models;
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Common;
 
 public class Player
@@ -14,7 +15,10 @@ public class Player
     [MaxLength(ValidationConstants.MaxSquadNameLength)]
     public string SquadName { get; set; } = null!;
 
+    [ForeignKey(nameof(Team))]
     public int TeamId { get; set; }
+
+    public Team Team { get; set; } = null!;
 
     public int PositionId { get; set; }
 
