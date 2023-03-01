@@ -6,6 +6,11 @@ using Common;
 
 public class Player
 {
+    public Player()
+    {
+        this.PlayerStatistics = new HashSet<PlayerStatistic>();
+    }
+
     [Key]
     public int PlayerId { get; set; }
 
@@ -26,4 +31,6 @@ public class Player
     public Position Position { get; set; } = null!;
 
     public bool IsInjured { get; set; }
+
+    ICollection<PlayerStatistic> PlayerStatistics { get; set; }
 }
