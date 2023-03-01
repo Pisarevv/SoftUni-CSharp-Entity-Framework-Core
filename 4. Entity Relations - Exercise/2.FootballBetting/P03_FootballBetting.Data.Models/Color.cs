@@ -2,6 +2,7 @@
 
 using Common;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class Color
 {
@@ -16,7 +17,9 @@ public class Color
     [MaxLength(ValidationConstants.MaxColorNameLength)]
     public string Name { get; set; } = null!;
 
+    [InverseProperty(nameof(Team.PrimaryKitColor))]
     public ICollection<Team> PrimaryKitTeams { get; set; }
 
+    [InverseProperty(nameof(Team.SecondaryKitColor))]
     public ICollection<Team> SecondaryKitTeams { get; set; }
 }

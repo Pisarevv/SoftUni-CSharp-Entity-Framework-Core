@@ -30,7 +30,8 @@ public class Team
 
     public Color SecondaryKitColor { get; set; } = null!;
 
+    [ForeignKey(nameof(Town))]
     public int TownId { get; set; }
 
-    //TODO : Add relations
+    public Town Town { get; set; } = null!;
 }
