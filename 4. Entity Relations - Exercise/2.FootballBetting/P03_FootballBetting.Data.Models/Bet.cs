@@ -14,7 +14,10 @@ public class Bet
 
     public DateTime DateTime { get; set; }
 
+    [ForeignKey(nameof(User))]
     public int UserId { get; set; }
+
+    public User User { get; set; } = null!;
 
     [ForeignKey(nameof(GameId))]
     public int GameId { get; set; }

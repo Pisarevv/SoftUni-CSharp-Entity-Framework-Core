@@ -5,6 +5,11 @@ using System.ComponentModel.DataAnnotations;
 
 public class User
 {
+    public User()
+    {
+        this.Bets = new HashSet<Bet>();
+    }
+
     [Key]
     public int UserId { get; set; }
 
@@ -18,4 +23,6 @@ public class User
     public string Email { get; set; } = null!;
 
     public decimal Balance { get; set; }
+
+    public ICollection<Bet> Bets { get; set; }
 }
