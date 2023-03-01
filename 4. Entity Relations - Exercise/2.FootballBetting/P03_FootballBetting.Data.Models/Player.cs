@@ -20,7 +20,10 @@ public class Player
 
     public Team Team { get; set; } = null!;
 
+    [ForeignKey(nameof(Position))]
     public int PositionId { get; set; }
+    
+    public Position Position { get; set; } = null!;
 
     public bool IsInjured { get; set; }
 }
