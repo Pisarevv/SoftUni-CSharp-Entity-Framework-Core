@@ -6,6 +6,12 @@ using Common;
 
 public class Team
 {
+    public Team()
+    {
+        this.HomeGames = new HashSet<Game>();
+        this.AwayGames = new HashSet<Game>();
+    }
+
     [Key]
     public int TeamId { get; set; }
 
@@ -34,4 +40,8 @@ public class Team
     public int TownId { get; set; }
 
     public Town Town { get; set; } = null!;
+
+    public ICollection<Game> HomeGames { get; set; } = null!;
+
+    public ICollection<Game> AwayGames { get; set; } = null!;
 }
