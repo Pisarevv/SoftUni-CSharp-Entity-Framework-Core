@@ -29,6 +29,16 @@
             {
                 entity.Property(s => s.CreatedOn).HasColumnType("Date");
             });
+
+            builder.Entity<Album>(entity =>
+            {
+                entity.Property(a => a.ReleaseDate).HasColumnType("Date");
+            });
+
+            builder.Entity<SongPerformer>(entity =>
+            {
+                entity.HasKey(sp => new { sp.SongId, sp.PerformerId });
+            });
         }
     }
 }
