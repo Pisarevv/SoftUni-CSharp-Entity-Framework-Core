@@ -1,6 +1,7 @@
 ﻿namespace MusicHub.Data
 {
     using Microsoft.EntityFrameworkCore;
+    using MusicHub.Data.Models;
 
     public class MusicHubDbContext : DbContext
     {
@@ -24,7 +25,10 @@
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-
+            builder.Entity<Song>(entity =>
+            {
+                entity.Property(s => s.CreatedOn).HasColumnType("Date");
+            });
         }
     }
 }
