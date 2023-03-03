@@ -20,9 +20,9 @@ public class Album
 
     public decimal Price => this.Songs.Sum(s => s.Price);
 
-    public int ProducerId { get; set; }
+    public int? ProducerId { get; set; }
 
-    public Producer Producer { get; set; } = null!;
+    public Producer Producer { get; set; }
 
     public ICollection<Song> Songs { get; set; }
 }

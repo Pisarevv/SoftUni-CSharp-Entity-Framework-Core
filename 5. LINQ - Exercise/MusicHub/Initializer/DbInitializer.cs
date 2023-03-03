@@ -31,7 +31,7 @@
 
             var datasets = JsonConvert.DeserializeObject<Dictionary<string, IEnumerable<JObject>>>(datasetsJson);
 
-            foreach (var dataset in datasets)
+            foreach (var dataset in datasets!)
             {
                 var entityType = GetType(dataset.Key);
 
@@ -41,7 +41,7 @@
                         .Select(j => j.ToObject(entityType))
                         .ToArray();
                     var entityName = $"{entityType.Name}s";
-                    context.AddRange(entities);
+                    context.AddRange(entities!);
 
                     if (entityType != typeof(SongPerformer))
                     {
@@ -66,7 +66,7 @@
                 .GetTypes()
                 .FirstOrDefault(t => t.Name == modelName);
 
-            return modelType;
+            return modelType!;
         }
     }
 }

@@ -14,6 +14,14 @@
         {
         }
 
+        public DbSet<Album> Albums { get; set; } = null!;
+        public DbSet<Performer> Performers { get; set; } = null!;
+        public DbSet<Producer> Producers { get; set; } = null!;
+        public DbSet<Song> Songs { get; set; } = null!;
+        public DbSet<SongPerformer> SongsPerformers { get; set; } = null!;
+        public DbSet<Writer> Writers { get; set; } = null!;
+       
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -25,6 +33,7 @@
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+           
             builder.Entity<Song>(entity =>
             {
                 entity.Property(s => s.CreatedOn).HasColumnType("Date");
