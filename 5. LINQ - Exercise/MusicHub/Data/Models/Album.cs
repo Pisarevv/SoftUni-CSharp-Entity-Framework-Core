@@ -22,7 +22,7 @@ public class Album
 
     public int ProducerId { get; set; }
 
-    //Todo: add Producer
+    public Producer Producer { get; set; } = null!;
 
     public ICollection<Song> Songs { get; set; }
 }

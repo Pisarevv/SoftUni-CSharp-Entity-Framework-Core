@@ -20,5 +20,5 @@ public class Producer
 
     public string? PhoneNumber { get; set; }
 
-    ICollection<Album> Albums { get; set; }
+    public ICollection<Album> Albums { get; set; }
 }

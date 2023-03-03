@@ -1,11 +1,17 @@
 ﻿namespace MusicHub.Data.Models;
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Common;
 using Enums;
 
 public class Song
 {
+    public Song()
+    {
+        this.SongPerformers = new HashSet<SongPerformer>();
+    }
+
     [Key]
     public int Id { get; set; }
 
@@ -17,16 +23,18 @@ public class Song
     public DateTime CreatedOn { get; set; }
 
     public Genre Genre { get; set; }
-    
-    public int AlbumId { get; set; }
 
-    //Todo: add Album 
+    [ForeignKey(nameof(Album))]
+    public int? AlbumId { get; set; }
 
+    public Album? Album { get; set; }
+
+    [ForeignKey(nameof(Writer))]
     public int WriterId { get; set; }
 
-    //Todo: add writer
+    public Writer Writer { get; set; } = null!;
 
     public decimal Price { get; set; }
 
-    //Todo : add songperfores collection
+    public ICollection<SongPerformer>SongPerformers  { get; set; }
 }
