@@ -7,6 +7,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 public class Book
 {
+    public Book()
+    {
+      this.BookCategories = new HashSet<BookCategory>();  
+    }
+
     [Key]
     public int BookId { get; set; }
 
@@ -31,5 +36,5 @@ public class Book
 
     public Author Author { get; set; } = null!;
  
-    //TODO : Add mapping table 
+    public ICollection<BookCategory> BookCategories { get; set; }
 }

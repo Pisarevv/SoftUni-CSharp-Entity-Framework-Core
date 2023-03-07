@@ -9,5 +9,8 @@ public class ValidationConstants
     //Book
     public const int BookTitleMaxLength = 50;
     public const int BookDescriptionMaxLength = 1000;
+
+    //Category
+    public const int CategoryNameMaxLength = 50; 
 }
 

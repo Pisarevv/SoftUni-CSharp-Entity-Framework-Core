@@ -1,10 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace BookShop.Models;
 
-namespace BookShop.Models;
-internal class Class1
+using System.ComponentModel.DataAnnotations;
+using Common;
+
+public class Category
 {
+    public Category()
+    {
+        this.CategoryBooks = new HashSet<BookCategory>();
+    }
+
+    [Key]
+    public int CategoryId { get; set; }
+
+    [MaxLength(ValidationConstants.CategoryNameMaxLength)]
+    public string Name { get; set; } = null!;
+
+    public ICollection<BookCategory> CategoryBooks { get; set; }
+
 }
