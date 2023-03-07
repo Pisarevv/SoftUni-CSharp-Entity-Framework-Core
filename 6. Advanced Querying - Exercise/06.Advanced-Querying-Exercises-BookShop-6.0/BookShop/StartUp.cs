@@ -5,17 +5,18 @@ namespace BookShop
     using BookShop.Models.Enums;
     using Data;
     using Initializer;
+    using Microsoft.EntityFrameworkCore;
 
     public class StartUp
     {
         public static void Main()
         {
             using var db = new BookShopContext();
-            DbInitializer.ResetDatabase(db);
+            //DbInitializer.ResetDatabase(db);
 
-            string input = Console.ReadLine();
+            //string? input = Console.ReadLine();
 
-            var result = GetBooksByAgeRestriction(db, input);
+            var result = GetGoldenBooks(db);
 
             Console.WriteLine(result);
         }
@@ -40,7 +41,28 @@ namespace BookShop
 
             return null!;
         }
+
+        //Problem  3
+        public static string GetGoldenBooks(BookShopContext context)
+        {
+            var result = context.Books.
+                Where(b => b.Copies < 5000 && b.EditionType == EditionType.Gold)
+                .OrderBy(b => b.BookId)
+                .Select(b => b.Title).ToArray();
+
+
+            //Console.WriteLine(context.Books.
+            //    Where(b => b.EditionType.Equals(EditionType.Gold) && b.Copies > 5000)
+            //    .OrderBy(b => b.BookId)
+            //    .Select(b => b.Title).ToQueryString());
+
+            Console.WriteLine( );
+
+            return string.Join (Environment.NewLine, result);
+        }
     }
+
+       
 
     
     
