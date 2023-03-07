@@ -1,16 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace BookShop.Models;
 
-namespace BookShop.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class BookCategory
 {
     [ForeignKey(nameof(Book))]
     public int BookId { get; set; }
 
-    public Book Book { get; set; } = null!;
+    public virtual Book Book { get; set; } = null!;
 
     [ForeignKey(nameof(Category))]
     public int CategoryId { get; set; }
 
-    public Category Category { get; set; } = null!;
+    public virtual Category Category { get; set; } = null!;
 }

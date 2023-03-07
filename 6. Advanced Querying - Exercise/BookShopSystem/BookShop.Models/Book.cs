@@ -34,7 +34,7 @@ public class Book
     [ForeignKey(nameof(Author))]
     public int AuthorId { get; set; }
 
-    public Author Author { get; set; } = null!;
+    public virtual Author Author { get; set; } = null!;
  
-    public ICollection<BookCategory> BookCategories { get; set; }
+    public virtual ICollection<BookCategory> BookCategories { get; set; }
 }

@@ -16,6 +16,6 @@ public class Category
     [MaxLength(ValidationConstants.CategoryNameMaxLength)]
     public string Name { get; set; } = null!;
 
-    public ICollection<BookCategory> CategoryBooks { get; set; }
+    public virtual ICollection<BookCategory> CategoryBooks { get; set; }
 
 }
