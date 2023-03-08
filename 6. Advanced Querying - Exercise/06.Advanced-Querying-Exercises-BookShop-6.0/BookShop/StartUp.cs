@@ -17,7 +17,7 @@ namespace BookShop
 
             //string? input = Console.ReadLine();
 
-            var result = GetBooksReleasedBefore(db, "12-04-1992");
+            var result = GetAuthorNamesEndingIn(db, "e");
 
             Console.WriteLine(result);
         }
@@ -121,6 +121,19 @@ namespace BookShop
                          .ToArray();
 
             return string.Join(Environment.NewLine, result.Select(b => $"{b.Title} - {b.EditionType} - ${b.Price:F2}"));
+        }
+
+        //Problem 8
+        public static string GetAuthorNamesEndingIn(BookShopContext context, string input)
+        {
+            var authors = context.Authors
+                          .Where(a => a.FirstName.EndsWith(input))
+                          .OrderBy(a => a.FirstName)
+                          .ThenBy(a => a.LastName)
+                          .Select(a => $"{a.FirstName} {a.LastName}")
+                          .ToArray();
+
+            return string.Join(Environment.NewLine, authors);
         }
     }
 
