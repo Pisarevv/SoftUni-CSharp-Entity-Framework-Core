@@ -6,17 +6,18 @@ namespace BookShop
     using Data;
     using Initializer;
     using Microsoft.EntityFrameworkCore;
+    using System.Globalization;
 
     public class StartUp
     {
         public static void Main()
         {
             using var db = new BookShopContext();
-            //DbInitializer.ResetDatabase(db);
+           // DbInitializer.ResetDatabase(db);
 
             //string? input = Console.ReadLine();
 
-            var result = GetBooksByCategory(db, "horror mystery drama");
+            var result = GetBooksReleasedBefore(db, "12-04-1992");
 
             Console.WriteLine(result);
         }
@@ -101,6 +102,25 @@ namespace BookShop
                          .ToArray();
        
             return string.Join(Environment.NewLine, result);
+        }
+
+        //Problem 7
+        public static string GetBooksReleasedBefore(BookShopContext context, string date)
+        {
+            
+            var result = context.Books
+                         .Where(b => b.ReleaseDate.HasValue &&
+                                     b.ReleaseDate.Value < DateTime.ParseExact(date, "dd-MM-yyyy", CultureInfo.InvariantCulture))
+                         .OrderByDescending(b => b.ReleaseDate.Value)
+                         .Select(b => new
+                         {
+                             b.Title,
+                             b.EditionType,
+                             b.Price
+                         })
+                         .ToArray();
+
+            return string.Join(Environment.NewLine, result.Select(b => $"{b.Title} - {b.EditionType} - ${b.Price:F2}"));
         }
     }
 
