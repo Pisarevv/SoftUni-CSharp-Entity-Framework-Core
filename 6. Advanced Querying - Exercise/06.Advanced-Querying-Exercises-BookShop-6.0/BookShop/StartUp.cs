@@ -155,7 +155,7 @@ namespace BookShop
         {
             StringBuilder sb = new StringBuilder();
 
-            Dictionary<string, string[]> results = context.Authors
+            var results = context.Authors
                          .Where(a => a.LastName.ToLower().StartsWith(input.ToLower()))
                          .Select(a => new
                          {
@@ -164,13 +164,13 @@ namespace BookShop
                                       .OrderBy(b => b.BookId)
                                       .Select(b => b.Title).ToArray()
                          })
-                         .ToDictionary(x => x.AuthorName, x => x.Books);
+                         .ToArray();
 
-            foreach(var author in results)
+            foreach (var result in results)
             {
-                foreach(var book in author.Value)
+                foreach(var book in result.Books)
                 {
-                    sb.AppendLine($"{book} ({author.Key})");
+                    sb.AppendLine($"{book} ({result.AuthorName})");
                 }
             }
 
