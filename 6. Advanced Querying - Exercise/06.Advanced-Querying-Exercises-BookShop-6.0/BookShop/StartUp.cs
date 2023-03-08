@@ -7,6 +7,7 @@ namespace BookShop
     using Initializer;
     using Microsoft.EntityFrameworkCore;
     using System.Globalization;
+    using System.Text;
 
     public class StartUp
     {
@@ -17,7 +18,7 @@ namespace BookShop
 
             //string? input = Console.ReadLine();
 
-            var result = GetBookTitlesContaining(db, "sK");
+            var result = GetBooksByAuthor(db, "R");
 
             Console.WriteLine(result);
         }
@@ -147,6 +148,33 @@ namespace BookShop
 
             return string.Join(Environment.NewLine , bookTitles);
                              
+        }
+
+        //Problem 10
+        public static string GetBooksByAuthor(BookShopContext context, string input)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            Dictionary<string, string[]> results = context.Authors
+                         .Where(a => a.LastName.ToLower().StartsWith(input.ToLower()))
+                         .Select(a => new
+                         {
+                             AuthorName = a.FirstName + " " + a.LastName,
+                             Books = a.Books
+                                      .OrderBy(b => b.BookId)
+                                      .Select(b => b.Title).ToArray()
+                         })
+                         .ToDictionary(x => x.AuthorName, x => x.Books);
+
+            foreach(var author in results)
+            {
+                foreach(var book in author.Value)
+                {
+                    sb.AppendLine($"{book} ({author.Key})");
+                }
+            }
+
+            return sb.ToString();
         }
     }
 
