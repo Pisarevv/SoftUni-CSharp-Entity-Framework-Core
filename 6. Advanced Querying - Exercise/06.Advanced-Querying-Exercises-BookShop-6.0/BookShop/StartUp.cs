@@ -19,9 +19,9 @@ namespace BookShop
 
             //string? input = Console.ReadLine();
 
-            var result = GetMostRecentBooks(db);
+            IncreasePrices(db);
 
-            Console.WriteLine(result);
+            //Console.WriteLine(result);
         }
 
 
@@ -252,6 +252,21 @@ namespace BookShop
             }
 
             return sb.ToString();
+        }
+
+        //Problem 15
+        public static void IncreasePrices(BookShopContext context)
+        {
+            var books = context.Books
+                        .Where(b => b.ReleaseDate.HasValue && 
+                                    b.ReleaseDate.Value.Year < 2010)
+                        .ToArray();
+
+            Array.ForEach(books, b => b.Price = b.Price + 5);
+            
+            context.BulkUpdate(books);
+
+            
         }
     }
 
