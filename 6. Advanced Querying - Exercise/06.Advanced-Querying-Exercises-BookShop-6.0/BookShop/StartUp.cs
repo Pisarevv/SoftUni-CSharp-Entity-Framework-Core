@@ -17,7 +17,7 @@ namespace BookShop
 
             //string? input = Console.ReadLine();
 
-            var result = GetAuthorNamesEndingIn(db, "e");
+            var result = GetBookTitlesContaining(db, "sK");
 
             Console.WriteLine(result);
         }
@@ -134,6 +134,19 @@ namespace BookShop
                           .ToArray();
 
             return string.Join(Environment.NewLine, authors);
+        }
+
+        //Problem 9
+        public static string GetBookTitlesContaining(BookShopContext context, string input)
+        {
+            var bookTitles = context.Books
+                             .Where(b => b.Title.ToLower().Contains(input.ToLower()))
+                             .OrderBy(b => b.Title)
+                             .Select(b => b.Title)
+                             .ToArray();
+
+            return string.Join(Environment.NewLine , bookTitles);
+                             
         }
     }
 
