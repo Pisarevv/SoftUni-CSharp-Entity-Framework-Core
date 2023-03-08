@@ -15,11 +15,11 @@ namespace BookShop
         public static void Main()
         {
             using var db = new BookShopContext();
-           // DbInitializer.ResetDatabase(db);
+            DbInitializer.ResetDatabase(db);
 
             //string? input = Console.ReadLine();
 
-            IncreasePrices(db);
+            RemoveBooks(db);
 
             //Console.WriteLine(result);
         }
@@ -267,6 +267,26 @@ namespace BookShop
             context.BulkUpdate(books);
 
             
+        }
+
+        //Problem 16
+        public static int RemoveBooks(BookShopContext context)
+        {
+            var booksToDelete = context.Books
+                                .Where(b => b.Copies < 4200)
+                                .ToArray();
+
+
+
+
+            int deletedBooks = booksToDelete.Count();
+
+            context.BulkDelete(booksToDelete);
+
+           
+
+            
+            return deletedBooks;
         }
     }
 
