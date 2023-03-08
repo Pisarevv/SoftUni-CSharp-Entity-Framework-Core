@@ -7,6 +7,7 @@ namespace BookShop
     using Initializer;
     using Microsoft.EntityFrameworkCore;
     using System.Globalization;
+    using System.Linq;
     using System.Text;
 
     public class StartUp
@@ -18,7 +19,7 @@ namespace BookShop
 
             //string? input = Console.ReadLine();
 
-            var result = GetTotalProfitByCategory(db);
+            var result = GetMostRecentBooks(db);
 
             Console.WriteLine(result);
         }
@@ -202,7 +203,7 @@ namespace BookShop
             return string.Join(Environment.NewLine, result.Select(r => $"{r.Author} - {r.BookCopies}"));
         }
 
-        //Proble 13
+        //Problem 13
         public static string GetTotalProfitByCategory(BookShopContext context)
         {
             var result = context.Categories
@@ -216,6 +217,41 @@ namespace BookShop
                          .ThenBy(r => r.Category);
 
             return string.Join(Environment.NewLine, result.Select(r => $"{r.Category} ${r.Profit:F2}"));
+        }
+
+        //Problem 14
+        public static string GetMostRecentBooks(BookShopContext context)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            var result = context.Categories
+                         .Select(c => new
+                         {
+                             Category = c.Name,
+                             Books = c.CategoryBooks
+                                      .OrderByDescending(b => b.Book.ReleaseDate)
+                                      .Select(cb => new
+                                      {
+                                          BookTitle = cb.Book.Title,
+                                          ReleaseDate = cb.Book.ReleaseDate!.Value.Year
+                                      })       
+                                      .ToArray()
+                                     
+                         })
+                         .OrderBy(c => c.Category)
+                         .ToArray();
+
+            foreach(var item in result)
+            {
+                sb.AppendLine($"--{item.Category}");
+
+                for (int i = 0; i < 3; i++)
+                {
+                    sb.AppendLine($"{item.Books[i].BookTitle} ({item.Books[i].ReleaseDate})");
+                }
+            }
+
+            return sb.ToString();
         }
     }
 
