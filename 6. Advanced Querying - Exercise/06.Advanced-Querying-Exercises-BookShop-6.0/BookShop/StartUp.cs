@@ -16,7 +16,7 @@ namespace BookShop
 
             //string? input = Console.ReadLine();
 
-            var result = GetBooksByPrice(db);
+            var result = GetBooksByCategory(db, "horror mystery drama");
 
             Console.WriteLine(result);
         }
@@ -76,12 +76,38 @@ namespace BookShop
 
             return string.Join(Environment.NewLine, result.Select(b => $"{b.Title} - ${b.Price:F2}"));
         }
+
+        //Problem 5 
+        public static string GetBooksNotReleasedIn(BookShopContext context, int year)
+        {
+            var result = context.Books
+                         .Where(b => b.ReleaseDate.HasValue
+                                  && b.ReleaseDate.Value.Year != year)
+                         .Select(b => b.Title)
+                         .ToArray();
+
+            return string.Join(Environment.NewLine, result);
+        }
+
+        //Problem 6 
+        public static string GetBooksByCategory(BookShopContext context, string input)
+        {
+            string[] categories = input.ToLower().Split(" ", StringSplitOptions.RemoveEmptyEntries).ToArray();
+
+            var result = context.Books
+                         .Where(b => b.BookCategories.Any(c => categories.Contains(c.Category.Name.ToLower())))
+                         .OrderBy(b => b.Title)
+                         .Select(b => b.Title)
+                         .ToArray();
+       
+            return string.Join(Environment.NewLine, result);
+        }
     }
 
-       
 
-    
-    
+
+
+
 
 }
 
