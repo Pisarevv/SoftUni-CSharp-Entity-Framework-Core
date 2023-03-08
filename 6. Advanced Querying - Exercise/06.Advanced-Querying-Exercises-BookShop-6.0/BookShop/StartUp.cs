@@ -16,7 +16,7 @@ namespace BookShop
 
             //string? input = Console.ReadLine();
 
-            var result = GetGoldenBooks(db);
+            var result = GetBooksByPrice(db);
 
             Console.WriteLine(result);
         }
@@ -59,6 +59,22 @@ namespace BookShop
             Console.WriteLine( );
 
             return string.Join (Environment.NewLine, result);
+        }
+
+        //Problem 4 
+        public static string GetBooksByPrice(BookShopContext context)
+        {
+            var result = context.Books.
+                         Where(b => b.Price > 40)
+                         .Select(b => new
+                         {
+                             b.Title,
+                             b.Price
+                         })
+                         .OrderByDescending(b => b.Price)
+                         .ToArray();
+
+            return string.Join(Environment.NewLine, result.Select(b => $"{b.Title} - ${b.Price:F2}"));
         }
     }
 
