@@ -18,7 +18,7 @@ namespace BookShop
 
             //string? input = Console.ReadLine();
 
-            var result = GetBooksByAuthor(db, "R");
+            var result = CountBooks(db, 12);
 
             Console.WriteLine(result);
         }
@@ -175,6 +175,16 @@ namespace BookShop
             }
 
             return sb.ToString();
+        }
+
+        //Problem 11
+        public static int CountBooks(BookShopContext context, int lengthCheck)
+        {
+            var result = context.Books
+                         .Count(b => b.Title.Length > lengthCheck);
+
+            return result;                   
+                         
         }
     }
 
