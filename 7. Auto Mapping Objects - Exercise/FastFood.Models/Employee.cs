@@ -1,5 +1,6 @@
 ﻿namespace FastFood.Models
 {
+    using FastFood.Common;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -13,10 +14,11 @@
         }
 
         [Key]
+        [MaxLength(ValidationConstants.GuidMaxLength)]
         public string Id { get; set; }
 
         [Required]
-        [StringLength(30, MinimumLength = 3)]
+        [StringLength(ValidationConstants.EmployeeNameMaxLength, MinimumLength = 3)]
         public string Name { get; set; } = null!;
 
         [Required]
@@ -24,7 +26,7 @@
         public int Age { get; set; }
 
         [Required]
-        [StringLength(30, MinimumLength = 3)]
+        [StringLength(ValidationConstants.EmployeeAddressMaxLength, MinimumLength = 3)]
         public string Address { get; set; } = null!;
 
         [ForeignKey(nameof(Position))] 

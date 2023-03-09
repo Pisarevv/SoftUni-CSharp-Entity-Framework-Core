@@ -43,7 +43,8 @@ namespace FastFood.Data.Migrations
             modelBuilder.Entity("FastFood.Models.Employee", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -71,7 +72,8 @@ namespace FastFood.Data.Migrations
             modelBuilder.Entity("FastFood.Models.Item", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -96,7 +98,8 @@ namespace FastFood.Data.Migrations
             modelBuilder.Entity("FastFood.Models.Order", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("Customer")
                         .IsRequired()
@@ -107,7 +110,8 @@ namespace FastFood.Data.Migrations
 
                     b.Property<string>("EmployeeId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -122,10 +126,12 @@ namespace FastFood.Data.Migrations
             modelBuilder.Entity("FastFood.Models.OrderItem", b =>
                 {
                     b.Property<string>("OrderId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("ItemId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");

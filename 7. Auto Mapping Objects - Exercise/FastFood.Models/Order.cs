@@ -6,6 +6,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
 
     using Enums;
+    using FastFood.Common;
 
     public class Order
     {
@@ -16,6 +17,7 @@
         }
 
         [Key]
+        [MaxLength(ValidationConstants.GuidMaxLength)]
         public string Id { get; set; }
 
         [Required]
@@ -31,6 +33,7 @@
         public decimal TotalPrice { get; set; }
 
         [ForeignKey(nameof(Employee))]
+        [MaxLength(ValidationConstants.GuidMaxLength)]
         public string EmployeeId { get; set; } = null!;
 
         [Required]

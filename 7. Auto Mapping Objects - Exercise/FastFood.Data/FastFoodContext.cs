@@ -2,7 +2,7 @@
 
 namespace FastFood.Data
 {
-    using FastFood.Data.Configuration;
+    using Common.Configuration;
     using Microsoft.EntityFrameworkCore;
     using Models;
     using System.Collections.Generic;
