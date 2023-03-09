@@ -2,6 +2,7 @@
 
 namespace FastFood.Data
 {
+    using FastFood.Data.Configuration;
     using Microsoft.EntityFrameworkCore;
     using Models;
     using System.Collections.Generic;
@@ -30,6 +31,15 @@ namespace FastFood.Data
 
         public DbSet<Position> Positions { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(ConfiguratingString.ConnectionString)
+                    .UseLazyLoadingProxies();
+            }
+            base.OnConfiguring(optionsBuilder);
+        }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<OrderItem>()

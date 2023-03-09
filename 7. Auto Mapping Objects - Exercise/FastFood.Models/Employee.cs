@@ -2,9 +2,15 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class Employee
     {
+        public Employee()
+        {
+            this.Orders = new HashSet<Order>();
+        }
+
         public int Id { get; set; }
 
         [Required]
@@ -19,11 +25,12 @@
         [StringLength(30, MinimumLength = 3)]
         public string Address { get; set; } = null!;
 
+        [ForeignKey(nameof(Position))] 
         public int PositionId { get; set; }
 
         [Required]
-        public Position Position { get; set; } = null!;
+        public virtual Position Position { get; set; } = null!;
 
-        public ICollection<Order> Orders { get; set; } = new List<Order>(); 
+        public virtual ICollection<Order> Orders { get; set; } 
     }
 }

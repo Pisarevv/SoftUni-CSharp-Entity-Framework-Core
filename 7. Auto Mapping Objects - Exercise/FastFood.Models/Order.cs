@@ -9,6 +9,10 @@
 
     public class Order
     {
+        public Order()
+        {
+            this.OrderItems = new HashSet<OrderItem>();
+        }
         public int Id { get; set; }
 
         [Required]
@@ -27,8 +31,8 @@
         public int EmployeeId { get; set; }
 
         [Required]
-        public Employee Employee { get; set; } = null!;
+        public virtual Employee Employee { get; set; } = null!;
 
-        public ICollection<OrderItem>? OrderItems { get; set; } = new List<OrderItem>();
+        public virtual ICollection<OrderItem>? OrderItems { get; set; }
     }
 }
