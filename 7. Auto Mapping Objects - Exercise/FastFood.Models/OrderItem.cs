@@ -6,16 +6,16 @@
     public class OrderItem
     {
         [ForeignKey(nameof(Order))]
-        public int OrderId { get; set; }
+        public string OrderId { get; set; } = null!;
 
         [Required]
-        public Order Order { get; set; } = null!;
+        public virtual Order Order { get; set; } = null!;
 
         [ForeignKey(nameof(Item))]
-        public int ItemId { get; set; }
+        public string ItemId { get; set; } = null!;
 
         [Required]
-        public Item Item { get; set; } = null!;
+        public virtual Item Item { get; set; } = null!;
 
         [Range(1, int.MaxValue)]
         public int Quantity { get; set; }

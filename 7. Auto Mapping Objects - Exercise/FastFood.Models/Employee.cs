@@ -8,10 +8,12 @@
     {
         public Employee()
         {
+            this.Id = Guid.NewGuid().ToString();
             this.Orders = new HashSet<Order>();
         }
 
-        public int Id { get; set; }
+        [Key]
+        public string Id { get; set; }
 
         [Required]
         [StringLength(30, MinimumLength = 3)]

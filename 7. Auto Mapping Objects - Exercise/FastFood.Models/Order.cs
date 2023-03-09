@@ -11,9 +11,12 @@
     {
         public Order()
         {
+            this.Id = Guid.NewGuid().ToString();
             this.OrderItems = new HashSet<OrderItem>();
         }
-        public int Id { get; set; }
+
+        [Key]
+        public string Id { get; set; }
 
         [Required]
         public string Customer { get; set; } = null!;
@@ -28,7 +31,7 @@
         public decimal TotalPrice { get; set; }
 
         [ForeignKey(nameof(Employee))]
-        public int EmployeeId { get; set; }
+        public string EmployeeId { get; set; } = null!;
 
         [Required]
         public virtual Employee Employee { get; set; } = null!;

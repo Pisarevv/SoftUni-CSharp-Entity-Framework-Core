@@ -8,9 +8,12 @@
     {
         public Item()
         {
+            this.Id = Guid.NewGuid().ToString();
             this.OrderItems = new HashSet<OrderItem>();
         }
-        public int Id { get; set; }
+
+        [Key]
+        public string Id { get; set; }
 
         [StringLength(30, MinimumLength = 3)]
         public string? Name { get; set; }
