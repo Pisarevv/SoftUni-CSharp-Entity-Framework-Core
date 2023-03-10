@@ -2,9 +2,11 @@
 namespace FastFood.Services.Data;
 
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using FastFood.Core.ViewModels.Positions;
 using FastFood.Data;
 using FastFood.Models;
+using Microsoft.EntityFrameworkCore;
 
 public class PositionsServices : IPositionsServices
 {
@@ -22,11 +24,12 @@ public class PositionsServices : IPositionsServices
     {
         Position position = this.mapper.Map<Position>(inputModel);
 
-        await context.Positions.AddAsync(position);
+        await this.context.Positions.AddAsync(position);
+        await this.context.SaveChangesAsync();
     }
 
-    Task<IEnumerable<PositionsAllViewModel>> IPositionsServices.GetAllPositionsAsync()
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<IEnumerable<PositionsAllViewModel>> GetAllPositionsAsync()
+    => await this.context.Positions
+             .ProjectTo<PositionsAllViewModel>(this.mapper.ConfigurationProvider)
+             .ToArrayAsync();
 }

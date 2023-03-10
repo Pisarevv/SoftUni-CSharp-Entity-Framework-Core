@@ -3,7 +3,7 @@
 namespace FastFood.Services.Data;
 public interface IPositionsServices
 {
-    Task Create(CreatePositionInputModel inputModel);
+    public Task CreateAsync(CreatePositionInputModel inputModel);
 
-    Task<IEnumerable<PositionsAllViewModel>> GetAllPositions();
+    public Task<IEnumerable<PositionsAllViewModel>> GetAllPositionsAsync();
 }
