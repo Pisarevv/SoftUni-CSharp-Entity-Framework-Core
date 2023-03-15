@@ -14,9 +14,9 @@ namespace ProductShop
         {
             ProductShopContext context = new ProductShopContext();
 
-            string inputJson = File.ReadAllText(@"..\..\..\Datasets\categories.json");
+            string inputJson = File.ReadAllText(@"..\..\..\Datasets\categories-products.json");
 
-            var result = ImportCategories(context, inputJson);
+            var result = ImportCategoryProducts(context, inputJson);
 
             Console.WriteLine(result);
 
@@ -91,6 +91,35 @@ namespace ProductShop
 
             return $"Successfully imported {validCategories.Count}";
         }
+
+        //Problem 4
+        public static string ImportCategoryProducts(ProductShopContext context, string inputJson)
+        {
+            IMapper mapper = CreateMapper();
+
+            ICollection<CategoryProduct> validCategories = new HashSet<CategoryProduct>();
+
+            ImportCategoryProductDto[] inputCategories = JsonConvert.DeserializeObject<ImportCategoryProductDto[]>(inputJson);
+
+            foreach(var productCategoryDto in inputCategories)
+            {
+                CategoryProduct categoryProduct = mapper.Map<CategoryProduct>(productCategoryDto);
+                validCategories.Add(categoryProduct);
+            }
+
+            context.CategoriesProducts.AddRange(validCategories);
+            context.SaveChanges();
+
+            return $"Successfully imported {validCategories.Count}";
+        }
+
+
+
+
+
+
+
+
 
         private static IMapper CreateMapper()
         {
