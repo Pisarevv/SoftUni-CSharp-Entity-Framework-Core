@@ -11,7 +11,10 @@ namespace ProductShop
             var config = new MapperConfiguration(cfg =>
             {
                 //User
-                this.CreateMap<ImportUserDTO, User>();
+                this.CreateMap<ImportUserDto, User>();
+
+                //Product
+                this.CreateMap<ImportProductDto, Product>();
             });
         }
     }

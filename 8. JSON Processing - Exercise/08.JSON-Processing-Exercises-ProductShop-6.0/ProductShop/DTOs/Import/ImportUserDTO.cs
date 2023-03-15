@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ProductShop.DTOs.Import;
-public class ImportUserDTO
+public class ImportUserDto
 {
     [JsonProperty("firstName")]
     public string? FirstName { get; set; }
