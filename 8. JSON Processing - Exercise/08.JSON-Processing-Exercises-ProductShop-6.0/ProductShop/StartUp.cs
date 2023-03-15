@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Castle.Core.Internal;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using ProductShop.Data;
+using ProductShop.DTOs.Export;
 using ProductShop.DTOs.Import;
 using ProductShop.Models;
 using System.Security.Cryptography.X509Certificates;
@@ -14,9 +17,9 @@ namespace ProductShop
         {
             ProductShopContext context = new ProductShopContext();
 
-            string inputJson = File.ReadAllText(@"..\..\..\Datasets\categories-products.json");
+            //string inputJson = File.ReadAllText(@"..\..\..\Datasets\categories-products.json");
 
-            var result = ImportCategoryProducts(context, inputJson);
+            var result = GetProductsInRange(context);
 
             Console.WriteLine(result);
 
@@ -113,7 +116,32 @@ namespace ProductShop
             return $"Successfully imported {validCategories.Count}";
         }
 
+        //Problem 5
+        public static string GetProductsInRange(ProductShopContext context)
+        {
+            IMapper mapper = CreateMapper();
 
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateProjection<Product, ProductInRangeDto>()
+                .ForMember(dto => dto.Seller, conf => conf.MapFrom(p => $"{p.Seller.FirstName} {p.Seller.LastName}"));
+            });
+            var camelCaseStrategy = SetCamelCaseStrategy();
+
+            var products = context.Products
+                           .Where(p => p.Price >= 500 && p.Price <= 1000)
+                           .OrderBy(p => p.Price)
+                           .ProjectTo<ProductInRangeDto>(configuration).ToList();
+
+            string resultJson = JsonConvert.SerializeObject(products, new JsonSerializerSettings
+            {
+                ContractResolver = camelCaseStrategy,
+                Formatting = Formatting.Indented
+            });
+
+            return resultJson;
+
+        }
 
 
 
@@ -127,6 +155,15 @@ namespace ProductShop
             {
                 cfg.AddProfile<ProductShopProfile>();
             }));
+        }
+
+        private static DefaultContractResolver SetCamelCaseStrategy()
+        {
+
+            return new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy(),
+            };
         }
     }
 }

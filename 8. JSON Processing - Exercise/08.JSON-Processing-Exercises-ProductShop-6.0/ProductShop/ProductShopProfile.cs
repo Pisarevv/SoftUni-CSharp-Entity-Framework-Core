@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ProductShop.DTOs.Export;
 using ProductShop.DTOs.Import;
 using ProductShop.Models;
 
@@ -15,6 +16,7 @@ namespace ProductShop
 
                 //Product
                 this.CreateMap<ImportProductDto, Product>();
+                this.CreateMap<Product, ProductInRangeDto>();
 
                 //Category
                 this.CreateMap<ImportCategoryDto, Category>();
