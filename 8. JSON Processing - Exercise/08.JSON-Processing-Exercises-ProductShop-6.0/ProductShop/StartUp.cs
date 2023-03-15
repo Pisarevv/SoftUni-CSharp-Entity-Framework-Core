@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Castle.Core.Internal;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using ProductShop.Data;
@@ -19,7 +20,7 @@ namespace ProductShop
 
             //string inputJson = File.ReadAllText(@"..\..\..\Datasets\categories-products.json");
 
-            var result = GetSoldProducts(context);
+            var result = GetCategoriesByProductsCount(context);
 
             Console.WriteLine(result);
 
@@ -143,6 +144,7 @@ namespace ProductShop
 
         }
 
+        //Problem 6
         public static string GetSoldProducts(ProductShopContext context)
         {
             //IMapper mapper = CreateMapper();
@@ -187,6 +189,32 @@ namespace ProductShop
             return resultJson;
         }
 
+
+        //Problem 7
+        public static string GetCategoriesByProductsCount(ProductShopContext context)
+        {
+            DefaultContractResolver defaultContractResolver = SetCamelCaseStrategy();
+
+            var categories = context.Categories
+                             .OrderByDescending(c => c.CategoriesProducts.Count)
+                             .Select(c => new CategoryByProductCountDto
+                             {
+                                 Category = c.Name,
+                                 ProductsCount = c.CategoriesProducts.Count,
+                                 AveragePrice = Math.Round(c.CategoriesProducts.Average(cp => cp.Product.Price),2,MidpointRounding.AwayFromZero),
+                                 TotalRevenue = Math.Round(c.CategoriesProducts.Sum(cp => cp.Product.Price),2, MidpointRounding.AwayFromZero)
+                             })
+                             .AsNoTracking()
+                             .ToArray();
+
+            string resultJson = JsonConvert.SerializeObject(categories, new JsonSerializerSettings
+            {
+                ContractResolver = defaultContractResolver,
+                Formatting = Formatting.Indented
+            });
+
+            return resultJson;
+        }
 
 
 
