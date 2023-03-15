@@ -20,7 +20,7 @@ namespace ProductShop
 
             //string inputJson = File.ReadAllText(@"..\..\..\Datasets\categories-products.json");
 
-            var result = GetCategoriesByProductsCount(context);
+            var result = GetUsersWithProducts(context);
 
             Console.WriteLine(result);
 
@@ -154,11 +154,11 @@ namespace ProductShop
             //    cfg.CreateProjection<Product, SoldProductsDto>()
             //    .ForMember(sp => sp.BuyerFirstName, conf => conf.MapFrom(p => p.Buyer.FirstName))
             //    .ForMember(sp => sp.BuyerLastName, conf => conf.MapFrom(p => p.Buyer.LastName));
-               
+
 
             //});
 
-            DefaultContractResolver camelCaseStrategy = SetCamelCaseStrategy();
+            IContractResolver camelCaseStrategy = SetCamelCaseStrategy();
 
             var users = context.Users
                         .Where(u => u.ProductsSold.Any(p => p.Buyer != null))
@@ -193,7 +193,7 @@ namespace ProductShop
         //Problem 7
         public static string GetCategoriesByProductsCount(ProductShopContext context)
         {
-            DefaultContractResolver defaultContractResolver = SetCamelCaseStrategy();
+            IContractResolver defaultContractResolver = SetCamelCaseStrategy();
 
             var categories = context.Categories
                              .OrderByDescending(c => c.CategoriesProducts.Count)
@@ -216,7 +216,51 @@ namespace ProductShop
             return resultJson;
         }
 
+        //Problem 8
+        public static string GetUsersWithProducts(ProductShopContext context)
+        {
+            IContractResolver contractResolver = SetCamelCaseStrategy();
 
+            var users = context.Users
+                        .Where(u => u.ProductsSold.Any(x => x.Buyer != null))
+                        .Select(u => new UserDto
+                        {
+                            FirstName = u.FirstName,
+                            LastName = u.LastName,
+                            Age = u.Age,
+                            SoldProducts = new SoldProductsUserDto
+                            {
+                                Count = u.ProductsSold
+                                                      .Count(p => p.Buyer != null),
+                                Products = u.ProductsSold
+                                                         .Where(p => p.Buyer != null)
+                                                         .Select(p => new ProductDto
+                                                         {
+                                                             Name = p.Name,
+                                                             Price = p.Price
+                                                         }).ToArray()
+                            }
+                        })
+                        .OrderByDescending(u => u.SoldProducts.Count)
+                        .ToArray();
+
+
+
+            var userWrapper = new UsersCountDto
+            {
+                UsersCount = users.Length,
+                Users = users
+            };
+
+            var resultString = JsonConvert.SerializeObject(userWrapper, new JsonSerializerSettings
+            {
+                ContractResolver = contractResolver,
+                Formatting = Formatting.Indented,
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            return resultString;
+        }
 
 
 
@@ -231,7 +275,7 @@ namespace ProductShop
             }));
         }
 
-        private static DefaultContractResolver SetCamelCaseStrategy()
+        private static IContractResolver SetCamelCaseStrategy()
         {
 
             return new DefaultContractResolver
