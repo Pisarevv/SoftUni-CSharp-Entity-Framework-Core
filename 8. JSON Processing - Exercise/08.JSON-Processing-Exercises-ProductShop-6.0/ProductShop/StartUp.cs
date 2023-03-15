@@ -19,7 +19,7 @@ namespace ProductShop
 
             //string inputJson = File.ReadAllText(@"..\..\..\Datasets\categories-products.json");
 
-            var result = GetProductsInRange(context);
+            var result = GetSoldProducts(context);
 
             Console.WriteLine(result);
 
@@ -142,6 +142,52 @@ namespace ProductShop
             return resultJson;
 
         }
+
+        public static string GetSoldProducts(ProductShopContext context)
+        {
+            //IMapper mapper = CreateMapper();
+
+            //var configuration = new MapperConfiguration(cfg =>
+            //{
+            //    cfg.CreateProjection<Product, SoldProductsDto>()
+            //    .ForMember(sp => sp.BuyerFirstName, conf => conf.MapFrom(p => p.Buyer.FirstName))
+            //    .ForMember(sp => sp.BuyerLastName, conf => conf.MapFrom(p => p.Buyer.LastName));
+               
+
+            //});
+
+            DefaultContractResolver camelCaseStrategy = SetCamelCaseStrategy();
+
+            var users = context.Users
+                        .Where(u => u.ProductsSold.Any(p => p.Buyer != null))
+                        .Select(u => new UserSoldProductsDto
+                        {
+                            FirstName = u.FirstName,
+                            LastName = u.LastName,
+                            SoldProducts = u.ProductsSold
+                                           .Where(u => u.Buyer != null)
+                                           .Select(p => new SoldProductsDto
+                                           {
+                                               Name = p.Name,
+                                               Price = p.Price,
+                                               BuyerFirstName = p.Buyer.FirstName,
+                                               BuyerLastName = p.Buyer.LastName,
+                                           }).ToArray()
+
+                        })
+                        .OrderBy(u => u.LastName)
+                        .ThenBy(u => u.FirstName);
+
+            string resultJson = JsonConvert.SerializeObject(users, new JsonSerializerSettings
+            {
+                ContractResolver = camelCaseStrategy,
+                Formatting = Formatting.Indented
+            });
+
+            return resultJson;
+        }
+
+
 
 
 
