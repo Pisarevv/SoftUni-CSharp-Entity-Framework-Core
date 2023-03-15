@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Castle.Core.Internal;
 using Newtonsoft.Json;
 using ProductShop.Data;
 using ProductShop.DTOs.Import;
@@ -13,9 +14,9 @@ namespace ProductShop
         {
             ProductShopContext context = new ProductShopContext();
 
-            string inputJson = File.ReadAllText(@"..\..\..\Datasets\products.json");
+            string inputJson = File.ReadAllText(@"..\..\..\Datasets\categories.json");
 
-            var result = ImportProducts(context, inputJson);
+            var result = ImportCategories(context, inputJson);
 
             Console.WriteLine(result);
 
@@ -67,6 +68,29 @@ namespace ProductShop
 
         }
 
+        //Problem 3 
+        public static string ImportCategories(ProductShopContext context, string inputJson)
+        {
+            IMapper mapper = CreateMapper();
+
+            ICollection<Category> validCategories = new HashSet<Category>();
+
+            ImportCategoryDto[] ?inputCategories = JsonConvert.DeserializeObject<ImportCategoryDto[]>(inputJson);
+
+            foreach (var categoryDto in inputCategories)
+            {
+                if (categoryDto.Name is null)
+                {
+                    continue;
+                }
+                Category validCategory = mapper.Map<Category>(categoryDto);
+                validCategories.Add(validCategory);
+            }
+            context.Categories.AddRange(validCategories);
+            context.SaveChanges();
+
+            return $"Successfully imported {validCategories.Count}";
+        }
 
         private static IMapper CreateMapper()
         {
