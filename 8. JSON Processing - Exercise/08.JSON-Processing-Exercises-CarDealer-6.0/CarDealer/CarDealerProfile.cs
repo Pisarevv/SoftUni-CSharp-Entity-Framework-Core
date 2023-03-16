@@ -11,10 +11,13 @@ namespace CarDealer
              MapperConfiguration config = new MapperConfiguration(cfg =>
             {
                 //Supplier
-                this.CreateMap<SupplierImportDto, Supplier>();
+                this.CreateMap<ImportSupplierDto, Supplier>();
 
                 //Part
                 this.CreateMap<ImportPartDto,Part>();
+
+                //Customer
+                this.CreateMap<ImportCustomerDto, Customer>();
             });
         }
     }

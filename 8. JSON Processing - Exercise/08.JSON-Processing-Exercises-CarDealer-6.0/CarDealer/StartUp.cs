@@ -2,6 +2,7 @@
 using CarDealer.Data;
 using CarDealer.DTOs.Import;
 using CarDealer.Models;
+using Castle.Core.Resource;
 using Newtonsoft.Json;
 using System.IO;
 using System.Linq.Expressions;
@@ -14,9 +15,9 @@ namespace CarDealer
         {
             CarDealerContext context = new CarDealerContext();
 
-            string inputJson = File.ReadAllText(@"..\..\..\Datasets\parts.json");
+            string inputJson = File.ReadAllText(@"..\..\..\Datasets\customers.json");
 
-            string result = ImportParts(context, inputJson);
+            string result = ImportCustomers(context, inputJson);
             Console.WriteLine(result);
 
         }
@@ -26,7 +27,7 @@ namespace CarDealer
         {
             IMapper mapper = CreateMapper();
 
-            var inputSuppliers = JsonConvert.DeserializeObject<List<SupplierImportDto>>(inputJson);
+            var inputSuppliers = JsonConvert.DeserializeObject<List<ImportSupplierDto>>(inputJson);
 
             ICollection<Supplier> validSuppliers = new HashSet<Supplier>();
             
@@ -68,6 +69,27 @@ namespace CarDealer
             context.SaveChanges();
 
             return $"Successfully imported {validParts.Count}.";
+        }
+
+
+        //Problem 12
+        public static string ImportCustomers(CarDealerContext context, string inputJson)
+        {
+            IMapper mapper = CreateMapper(); 
+            
+            ICollection<ImportCustomerDto> inputCustomers = JsonConvert.DeserializeObject<List<ImportCustomerDto>> (inputJson);
+            ICollection<Customer> validCostumers = new HashSet<Customer>();
+
+            foreach(var customerDto in inputCustomers)
+            {
+                Customer validCustomer = mapper.Map<Customer>(customerDto);
+                validCostumers.Add(validCustomer);
+
+            }
+            context.Customers.AddRange(validCostumers);
+            context.SaveChanges();
+
+            return $"Successfully imported {validCostumers.Count}.";
         }
 
 

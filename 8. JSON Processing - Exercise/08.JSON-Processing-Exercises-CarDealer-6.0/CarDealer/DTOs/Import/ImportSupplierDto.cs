@@ -2,7 +2,7 @@
 
 namespace CarDealer.DTOs.Import;
 
-public class SupplierImportDto
+public class ImportSupplierDto
 {
     [JsonProperty("name")]
     public string Name { get; set; }
