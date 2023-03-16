@@ -18,6 +18,10 @@ namespace CarDealer
 
                 //Customer
                 this.CreateMap<ImportCustomerDto, Customer>();
+
+                //Car
+                //this.CreateMap<ImportCarDto, Car>()
+                //.ForMember(c => c.PartsCars, opt => opt.ConvertUsing<PartCar,<>>;
             });
         }
     }

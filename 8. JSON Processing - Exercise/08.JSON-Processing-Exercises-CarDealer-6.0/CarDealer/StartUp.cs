@@ -15,9 +15,9 @@ namespace CarDealer
         {
             CarDealerContext context = new CarDealerContext();
 
-            string inputJson = File.ReadAllText(@"..\..\..\Datasets\customers.json");
+            string inputJson = File.ReadAllText(@"..\..\..\Datasets\cars.json");
 
-            string result = ImportCustomers(context, inputJson);
+            string result = ImportCars(context, inputJson);
             Console.WriteLine(result);
 
         }
@@ -71,6 +71,59 @@ namespace CarDealer
             return $"Successfully imported {validParts.Count}.";
         }
 
+        //Problem 11
+        public static string ImportCars(CarDealerContext context, string inputJson)
+        {
+            IMapper mapper = CreateMapper();
+
+            ICollection<ImportCarDto> inputCars = JsonConvert.DeserializeObject<IList<ImportCarDto>> (inputJson);
+
+            int validCars = 0;
+
+            foreach (var carDto in inputCars)
+            {
+                ICollection<PartCar> carParts = new HashSet<PartCar>();
+
+                int nextFreeId = context.Cars
+                                .OrderByDescending(c => c.Id)
+                                .Select(c => c.Id)
+                                .FirstOrDefault();
+                                
+                                
+                                
+                               
+
+
+
+                Car validCar = new Car()
+                {
+                    Make = carDto.Make,
+                    Model = carDto.Model,
+                    TravelledDistance = carDto.TravelledDistance,
+
+                };
+
+                foreach (var carPartId in carDto.PartsCars)
+                {
+                    PartCar part = new PartCar()
+                    {
+                        PartId = carPartId,
+                        CarId = validCar.Id
+                    };
+
+                    carParts.Add(part);
+                }
+
+                validCar.PartsCars = carParts;
+
+                context.Cars.Add(validCar);
+                context.SaveChanges();
+                validCars++;
+            }
+
+
+            return $"Successfully imported {validCars}.";
+        }
 
         //Problem 12
         public static string ImportCustomers(CarDealerContext context, string inputJson)
