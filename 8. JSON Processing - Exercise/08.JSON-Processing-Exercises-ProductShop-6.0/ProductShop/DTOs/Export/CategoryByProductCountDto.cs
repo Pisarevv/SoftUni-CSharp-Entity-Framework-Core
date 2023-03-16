@@ -6,7 +6,7 @@ public class CategoryByProductCountDto
 
     public int ProductsCount { get; set; }
 
-    public decimal AveragePrice { get; set; }
+    public string AveragePrice { get; set; }
 
-    public decimal TotalRevenue { get; set; }
+    public string TotalRevenue { get; set; }
 }

@@ -20,7 +20,7 @@ namespace ProductShop
 
             //string inputJson = File.ReadAllText(@"..\..\..\Datasets\categories-products.json");
 
-            var result = GetUsersWithProducts(context);
+            var result = GetCategoriesByProductsCount(context);
 
             Console.WriteLine(result);
 
@@ -201,8 +201,8 @@ namespace ProductShop
                              {
                                  Category = c.Name,
                                  ProductsCount = c.CategoriesProducts.Count,
-                                 AveragePrice = Math.Round(c.CategoriesProducts.Average(cp => cp.Product.Price),2,MidpointRounding.AwayFromZero),
-                                 TotalRevenue = Math.Round(c.CategoriesProducts.Sum(cp => cp.Product.Price),2, MidpointRounding.AwayFromZero)
+                                 AveragePrice = Math.Round(c.CategoriesProducts.Average(cp => cp.Product.Price),2,MidpointRounding.AwayFromZero).ToString(),
+                                 TotalRevenue = Math.Round(c.CategoriesProducts.Sum(cp => cp.Product.Price),2, MidpointRounding.AwayFromZero).ToString()
                              })
                              .AsNoTracking()
                              .ToArray();
