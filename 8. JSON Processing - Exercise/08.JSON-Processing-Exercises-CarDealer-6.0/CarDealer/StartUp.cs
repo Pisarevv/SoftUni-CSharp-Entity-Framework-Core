@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using CarDealer.Data;
+using CarDealer.DTOs.Export;
 using CarDealer.DTOs.Import;
 using CarDealer.Models;
 using Castle.Core.Resource;
@@ -15,9 +17,9 @@ namespace CarDealer
         {
             CarDealerContext context = new CarDealerContext();
 
-            string inputJson = File.ReadAllText(@"..\..\..\Datasets\sales.json");
+            string inputJson = File.ReadAllText(@"..\..\..\Datasets\customers.json");
 
-            string result = ImportSales(context, inputJson);
+            string result = ImportCustomers(context, inputJson);
             Console.WriteLine(result);
 
         }
@@ -164,6 +166,21 @@ namespace CarDealer
 
             return $"Successfully imported {validSales.Count}.";
         }
+
+        //Problem 14
+        public static string GetOrderedCustomers(CarDealerContext context)
+        {
+            IMapper mapper = CreateMapper();
+
+            var customers = context.Customers
+                            .OrderBy(c => c.BirthDate)
+                            .ThenBy(c => c.IsYoungDriver)
+                            .ProjectTo<ExportCustomerDto>(mapper.ConfigurationProvider)
+                            .ToArray();
+
+            return null;
+        }
+
 
 
         private static IMapper CreateMapper()

@@ -5,10 +5,10 @@ namespace CarDealer.DTOs.Import;
 public class ImportCustomerDto
 {
     [JsonProperty("name")]
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 
-    [JsonProperty("birthDay")]
-    public DateTime BirthDate { get; set; }
+    [JsonProperty("birthDate")]
+    public string BirthDate { get; set; } = null!;
 
     [JsonProperty("isYoungDriver")]
     public bool IsYoungDriver { get; set; }
