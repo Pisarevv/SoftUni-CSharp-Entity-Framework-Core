@@ -19,7 +19,7 @@ namespace CarDealer
 
             //string inputJson = File.ReadAllText(@"..\..\..\Datasets\customers.json");
 
-            string result = GetCarsFromMakeToyota(context);
+            string result = GetLocalSuppliers(context);
             Console.WriteLine(result);
 
         }
@@ -196,7 +196,18 @@ namespace CarDealer
             return JsonConvert.SerializeObject (cars, Formatting.Indented);
         }
 
+        //Problem 16
+        public static string GetLocalSuppliers(CarDealerContext context)
+        {
+            IMapper mapper = CreateMapper();
 
+            var suppliers = context.Suppliers
+                            .Where(s => !s.IsImporter)
+                            .ProjectTo<ExportSuppliersDto>(mapper.ConfigurationProvider)
+                            .ToArray();
+
+            return JsonConvert.SerializeObject(suppliers, Formatting.Indented);
+        }
 
         private static IMapper CreateMapper()
         {
