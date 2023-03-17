@@ -17,9 +17,9 @@ namespace CarDealer
         {
             CarDealerContext context = new CarDealerContext();
 
-            string inputJson = File.ReadAllText(@"..\..\..\Datasets\customers.json");
+            //string inputJson = File.ReadAllText(@"..\..\..\Datasets\customers.json");
 
-            string result = ImportCustomers(context, inputJson);
+            string result = GetOrderedCustomers(context);
             Console.WriteLine(result);
 
         }
@@ -178,7 +178,7 @@ namespace CarDealer
                             .ProjectTo<ExportCustomerDto>(mapper.ConfigurationProvider)
                             .ToArray();
 
-            return null;
+            return JsonConvert.SerializeObject(customers, Formatting.Indented);
         }
 
 

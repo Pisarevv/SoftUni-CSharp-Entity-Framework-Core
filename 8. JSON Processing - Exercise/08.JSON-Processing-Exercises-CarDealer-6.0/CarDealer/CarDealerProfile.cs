@@ -23,7 +23,7 @@ namespace CarDealer
                 .ForMember(d => d.BirthDate, opt => opt.MapFrom(s => DateTime.Parse(s.BirthDate,CultureInfo.InvariantCulture)));
 
                 this.CreateMap<Customer, ExportCustomerDto>()
-                .ForMember(d => d.BirthDate, opt => opt.MapFrom(s => s.BirthDate.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)));
+                .ForMember(d => d.BirthDate, opt => opt.MapFrom(s => s.BirthDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)));
 
                 //Sales
                 this.CreateMap<ImporSalesDto,Sale>();
