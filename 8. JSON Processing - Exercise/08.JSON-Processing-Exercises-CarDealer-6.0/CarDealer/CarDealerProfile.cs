@@ -26,6 +26,11 @@ namespace CarDealer
                 this.CreateMap<ImportCustomerDto, Customer>()
                 .ForMember(d => d.BirthDate, opt => opt.MapFrom(s => DateTime.Parse(s.BirthDate,CultureInfo.InvariantCulture)));
 
+                this.CreateMap<Customer, ExportCustomerSaleDto>()
+                .ForMember(d => d.FullName, opt => opt.MapFrom(s => s.Name))
+                .ForMember(d => d.BoughtCars, opt => opt.MapFrom(s => s.Sales.Count))
+                .ForMember(d => d.SpentMoney, opt => opt.MapFrom(s => s.Sales.SelectMany(c => c.Car.PartsCars.Select(pc => pc.Part.Price)).Sum()));
+
                 this.CreateMap<Customer, ExportCustomerDto>()
                 .ForMember(d => d.BirthDate, opt => opt.MapFrom(s => s.BirthDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)));
 

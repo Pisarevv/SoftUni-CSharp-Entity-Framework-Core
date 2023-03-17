@@ -6,6 +6,7 @@ using CarDealer.DTOs.Import;
 using CarDealer.Models;
 using Castle.Core.Resource;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.IO;
 using System.Linq.Expressions;
 
@@ -19,7 +20,7 @@ namespace CarDealer
 
             //string inputJson = File.ReadAllText(@"..\..\..\Datasets\customers.json");
 
-            string result = GetCarsWithTheirListOfParts(context);
+            string result = GetTotalSalesByCustomer(context);
             Console.WriteLine(result);
 
         }
@@ -222,6 +223,25 @@ namespace CarDealer
             return JsonConvert.SerializeObject(cars,Formatting.Indented);
         }
 
+        //Problem 18
+        public static string GetTotalSalesByCustomer(CarDealerContext context)
+        {
+            var mapper = CreateMapper();
+            IContractResolver contractResolver = SetCamelCaseStrategy();
+
+            var customers = context.Customers
+                            .Where(c => c.Sales.Count > 0)
+                            .ProjectTo<ExportCustomerSaleDto>(mapper.ConfigurationProvider)
+                            .OrderByDescending(c => c.SpentMoney)
+                            .ThenByDescending(c => c.BoughtCars)
+                            .ToArray();
+
+            return JsonConvert.SerializeObject (customers, new JsonSerializerSettings
+            {
+                ContractResolver = contractResolver,
+                Formatting = Formatting.Indented
+            });
+        }
 
 
 
@@ -232,6 +252,14 @@ namespace CarDealer
         {
             return new Mapper(new MapperConfiguration(cfg =>
             cfg.AddProfile<CarDealerProfile>())); 
+        }
+
+        private static IContractResolver SetCamelCaseStrategy()
+        {
+            return new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            };
         }
     }
 }
