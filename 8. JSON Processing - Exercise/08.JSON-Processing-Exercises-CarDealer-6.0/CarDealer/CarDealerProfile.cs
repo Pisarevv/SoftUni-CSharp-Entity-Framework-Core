@@ -27,6 +27,9 @@ namespace CarDealer
 
                 //Sales
                 this.CreateMap<ImporSalesDto,Sale>();
+
+                //Car
+                this.CreateMap<Car, ExportToyotaDto>();
             });
         }
     }

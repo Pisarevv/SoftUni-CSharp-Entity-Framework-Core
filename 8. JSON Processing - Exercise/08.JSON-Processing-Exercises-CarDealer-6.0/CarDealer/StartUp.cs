@@ -19,7 +19,7 @@ namespace CarDealer
 
             //string inputJson = File.ReadAllText(@"..\..\..\Datasets\customers.json");
 
-            string result = GetOrderedCustomers(context);
+            string result = GetCarsFromMakeToyota(context);
             Console.WriteLine(result);
 
         }
@@ -101,7 +101,7 @@ namespace CarDealer
                 {
                     Make = carDto.Make,
                     Model = carDto.Model,
-                    TravelledDistance = carDto.TravelledDistance,
+                    TraveledDistance = carDto.TravelledDistance,
 
                 };
 
@@ -179,6 +179,21 @@ namespace CarDealer
                             .ToArray();
 
             return JsonConvert.SerializeObject(customers, Formatting.Indented);
+        }
+
+        //Problem 15
+        public static string GetCarsFromMakeToyota(CarDealerContext context)
+        {
+            var mapper = CreateMapper();
+
+            var cars = context.Cars
+                       .Where(c => c.Make == "Toyota")
+                       .OrderBy(c => c.Model)
+                       .ThenByDescending(c => c.TraveledDistance)
+                       .ProjectTo<ExportToyotaDto>(mapper.ConfigurationProvider)
+                       .ToArray();
+
+            return JsonConvert.SerializeObject (cars, Formatting.Indented);
         }
 
 
