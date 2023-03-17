@@ -2,10 +2,6 @@
 
 public class ExportCarInfoDto
 {
-    public ExportCarInfoDto()
-    {
-        
-    }
     public string Make { get; set; } = null!;
 
     public string Model { get; set; } = null!;

@@ -37,10 +37,24 @@ namespace CarDealer
                 //Sales
                 this.CreateMap<ImporSalesDto,Sale>();
 
+                this.CreateMap<Sale, ExportSaleWithDiscountDto>()
+                .ForMember(d => d.Car, opt => opt.MapFrom(s => new ExportCarInfoDto
+                {
+                    Make = s.Car.Make,
+                    Model = s.Car.Model,
+                    TraveledDistance = s.Car.TraveledDistance
+                }))
+                .ForMember(d => d.CustomerName, opt => opt.MapFrom(s => s.Customer.Name))
+                .ForMember(d => d.Discount, opt => opt.MapFrom(s => s.Discount.ToString("F2")))
+                .ForMember(d => d.Price, opt => opt.MapFrom(s => s.Car.PartsCars.Select(pc => pc.Part.Price).Sum().ToString()))
+                .ForMember(d => d.PriceWithDiscount, opt => opt.MapFrom(s => Math.Round((s.Car.PartsCars.Select(pc => pc.Part.Price).Sum() * ((100 - s.Discount) / 100)),2).ToString("F2")));
+
                 //Car
                 this.CreateMap<Car, ExportToyotaDto>();
+
                 this.CreateMap<Car, ExportCarInfoDbDto>()
                 .ForMember(d => d.Parts, obj => obj.MapFrom(s => s.PartsCars.Select(ps => ps.Part)));
+
                 this.CreateMap<ExportCarInfoDbDto, ExportCarDtoWrapper>()
                 .ForMember(d => d.Car, obj => obj.MapFrom(s => new ExportCarInfoDto()
                 {

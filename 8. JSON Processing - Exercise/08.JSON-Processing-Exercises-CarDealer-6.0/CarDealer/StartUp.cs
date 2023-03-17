@@ -20,7 +20,7 @@ namespace CarDealer
 
             //string inputJson = File.ReadAllText(@"..\..\..\Datasets\customers.json");
 
-            string result = GetTotalSalesByCustomer(context);
+            string result = GetSalesWithAppliedDiscount(context);
             Console.WriteLine(result);
 
         }
@@ -243,6 +243,21 @@ namespace CarDealer
             });
         }
 
+
+        //Problem 19
+        public static string GetSalesWithAppliedDiscount(CarDealerContext context)
+        {
+            var mapper = CreateMapper();
+            var sales = context.Sales
+                        .Take(10)
+                        .ProjectTo<ExportSaleWithDiscountDto>(mapper.ConfigurationProvider)
+                        .ToArray();
+
+            return JsonConvert.SerializeObject(sales, new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented
+            });
+        }
 
 
 
