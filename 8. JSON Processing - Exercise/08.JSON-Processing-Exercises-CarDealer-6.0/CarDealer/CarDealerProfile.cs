@@ -19,6 +19,8 @@ namespace CarDealer
 
                 //Part
                 this.CreateMap<ImportPartDto,Part>();
+                this.CreateMap<Part,ExportPartDto>()
+                .ForMember(d => d.Price, obj => obj.MapFrom(s => s.Price.ToString("F2")));
 
                 //Customer
                 this.CreateMap<ImportCustomerDto, Customer>()
@@ -32,6 +34,18 @@ namespace CarDealer
 
                 //Car
                 this.CreateMap<Car, ExportToyotaDto>();
+                this.CreateMap<Car, ExportCarInfoDbDto>()
+                .ForMember(d => d.Parts, obj => obj.MapFrom(s => s.PartsCars.Select(ps => ps.Part)));
+                this.CreateMap<ExportCarInfoDbDto, ExportCarDtoWrapper>()
+                .ForMember(d => d.Car, obj => obj.MapFrom(s => new ExportCarInfoDto()
+                {
+                    Make = s.Make,
+                    Model = s.Model,
+                    TraveledDistance = s.TraveledDistance
+                }))
+                .ForMember(d => d.Parts, obj => obj.MapFrom(s => s.Parts));
+                
+             
             });
         }
     }

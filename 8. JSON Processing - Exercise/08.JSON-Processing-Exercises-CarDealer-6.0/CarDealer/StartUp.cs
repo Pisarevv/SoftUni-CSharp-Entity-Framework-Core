@@ -19,7 +19,7 @@ namespace CarDealer
 
             //string inputJson = File.ReadAllText(@"..\..\..\Datasets\customers.json");
 
-            string result = GetLocalSuppliers(context);
+            string result = GetCarsWithTheirListOfParts(context);
             Console.WriteLine(result);
 
         }
@@ -208,6 +208,25 @@ namespace CarDealer
 
             return JsonConvert.SerializeObject(suppliers, Formatting.Indented);
         }
+
+        //Problem 17
+        public static string GetCarsWithTheirListOfParts(CarDealerContext context)
+        {
+            var mapper = CreateMapper();
+
+            var cars = context.Cars
+                       .ProjectTo<ExportCarInfoDbDto>(mapper.ConfigurationProvider)
+                       .ProjectTo<ExportCarDtoWrapper>(mapper.ConfigurationProvider)
+                       .ToArray();
+
+            return JsonConvert.SerializeObject(cars,Formatting.Indented);
+        }
+
+
+
+
+
+
 
         private static IMapper CreateMapper()
         {
