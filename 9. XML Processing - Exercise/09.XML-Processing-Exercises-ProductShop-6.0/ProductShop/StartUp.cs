@@ -14,9 +14,9 @@ namespace ProductShop
         {
             ProductShopContext context = new ProductShopContext();
 
-            var inputXML = File.ReadAllText("../../../Datasets/categories.xml");
+            var inputXML = File.ReadAllText("../../../Datasets/categories-products.xml");
            
-            var result = ImportCategories(context, inputXML);
+            var result = ImportCategoryProducts(context, inputXML);
             Console.WriteLine(result);
         }
 
@@ -71,7 +71,7 @@ namespace ProductShop
             IMapper mapper= CreateMapper();
             IXmlHelper xmlHelper = new XmlHelper();
 
-            var categories = xmlHelper.DeserializeCollection<ImportCategoriesDto>(inputXml);
+            var categories = xmlHelper.DeserializeCollection<ImportCategoryDto>(inputXml);
             var validCategories = new HashSet<Category>();
 
             foreach(var categoryDto in categories)
@@ -86,7 +86,27 @@ namespace ProductShop
             return $"Successfully imported {validCategories.Count}";
         }
 
+        //Problem 4
+        public static string ImportCategoryProducts(ProductShopContext context, string inputXml)
+        {
+            IMapper mapper= CreateMapper();
+            IXmlHelper xmlHelper = new XmlHelper();
 
+            var catategoriesProducts = xmlHelper.DeserializeCollection<ImportCategoryProductDto>(inputXml);
+
+            var validCategoriesProducts = new HashSet<CategoryProduct>();
+
+            foreach(var categoryDto in catategoriesProducts)
+            {
+                CategoryProduct validCategoryProduct = mapper.Map<CategoryProduct>(categoryDto);
+                validCategoriesProducts.Add(validCategoryProduct);
+            }
+
+            context.CategoryProducts.AddRange(validCategoriesProducts);
+            context.SaveChanges();
+
+            return $"Successfully imported {validCategoriesProducts.Count}";
+        }
 
 
         public static IMapper CreateMapper()

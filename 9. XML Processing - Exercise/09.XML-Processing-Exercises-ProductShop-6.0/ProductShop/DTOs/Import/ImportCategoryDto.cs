@@ -3,7 +3,7 @@
 namespace ProductShop.DTOs.Import;
 
 [XmlType("Category")]
-public class ImportCategoriesDto
+public class ImportCategoryDto
 {
     [XmlElement("name")]
     public string Name { get; set; } = null!;
