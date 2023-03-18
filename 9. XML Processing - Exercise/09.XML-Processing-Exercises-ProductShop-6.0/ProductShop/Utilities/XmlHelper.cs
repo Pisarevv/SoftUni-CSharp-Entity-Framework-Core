@@ -5,9 +5,9 @@ using System.Xml.Serialization;
 
 namespace ProductShop.Utilities;
 
-public class XmlHelper
+public class XmlHelper : IXmlHelper
 {
-    public T Deserialize<T>(string inputXml,string rootName)
+    public T Deserialize<T>(string inputXml)
     {
 
         using StringReader reader = new StringReader(inputXml);
@@ -22,12 +22,13 @@ public class XmlHelper
              
     }
 
-    public T[] DeserializeCollection<T>(string inputXml, string rootName)
+    public T[] DeserializeCollection<T>(string inputXml)
     {
 
         using StringReader reader = new StringReader(inputXml);
 
-        XmlRootAttribute xmlRoot = new XmlRootAttribute(rootName);
+        string xmlRootName = GetRootName(inputXml);
+        XmlRootAttribute xmlRoot = new XmlRootAttribute(xmlRootName);
 
         XmlSerializer xmlSerializer = new XmlSerializer(typeof(T[]), xmlRoot);
         T[] result = (T[])xmlSerializer.Deserialize(reader);
