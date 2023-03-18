@@ -13,11 +13,15 @@ namespace ProductShop
             {
                 //User
                 this.CreateMap<ImportUserDto, User>();
+                this.CreateMap<User, ExportUserAndSoldProductsDto>()
+                .ForMember(s => s.SoldProducts, obj => obj.MapFrom(s => s.ProductsSold));
 
                 //Product
                 this.CreateMap<ImportProductDto, Product>();
                 this.CreateMap<Product,ExportProductInRangeDto>()
                 .ForMember(d => d.BuyerName, opt => opt.MapFrom(s => $"{s.Buyer.FirstName} {s.Buyer.LastName}"));
+                this.CreateMap<Product, ExportProductDto>();
+                
 
                 //Category
                 this.CreateMap<ImportCategoryDto, Category>();

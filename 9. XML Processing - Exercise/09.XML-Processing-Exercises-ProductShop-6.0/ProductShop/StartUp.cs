@@ -16,9 +16,9 @@ namespace ProductShop
         {
             ProductShopContext context = new ProductShopContext();
 
-            var inputXML = File.ReadAllText("../../../Datasets/products.xml");
+            //var inputXML = File.ReadAllText("../../../Datasets/products.xml");
 
-            var result = ImportProducts(context,inputXML);
+            var result = GetSoldProducts(context);
             Console.WriteLine(result);
         }
 
@@ -126,6 +126,25 @@ namespace ProductShop
 
 
             string result = xmlHelper.Serialize<ExportProductInRangeDto>(products, "Products");
+
+            return result;
+        }
+
+        //Problem 6
+        public static string GetSoldProducts(ProductShopContext context)
+        {
+            IMapper mapper = CreateMapper();
+            IXmlHelper xmlHelper= new XmlHelper();
+
+            var users = context.Users
+                        .Where(u => u.ProductsSold.Count > 1)
+                        .OrderBy(u => u.LastName)
+                        .ThenBy(u => u.FirstName)
+                        .Take(5)
+                        .ProjectTo<ExportUserAndSoldProductsDto>(mapper.ConfigurationProvider)
+                        .ToArray();
+
+            string result = xmlHelper.Serialize<ExportUserAndSoldProductsDto>(users, "Users");
 
             return result;
         }
