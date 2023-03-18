@@ -6,7 +6,7 @@
         <sellerId>25</sellerId>
         <buyerId>24</buyerId>
     </Product>
-    <Product>
+    <Product> 
         <name>SNORING HP</name>
         <price>53.59</price>
         <sellerId>24</sellerId>
