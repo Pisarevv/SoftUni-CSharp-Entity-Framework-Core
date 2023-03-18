@@ -18,7 +18,7 @@ namespace ProductShop
 
             //var inputXML = File.ReadAllText("../../../Datasets/products.xml");
 
-            var result = GetSoldProducts(context);
+            var result = GetCategoriesByProductsCount(context);
             Console.WriteLine(result);
         }
 
@@ -148,6 +148,36 @@ namespace ProductShop
 
             return result;
         }
+
+        //Problem 7
+        public static string GetCategoriesByProductsCount(ProductShopContext context)
+        {
+            IMapper mapper = CreateMapper();
+            IXmlHelper xmlHelper= new XmlHelper();
+
+            var categories = context.Categories
+                             .ProjectTo<ExportCategoryDto>(mapper.ConfigurationProvider)
+                             //.ToArray()
+                             .OrderByDescending(c => c.ProductsCount)
+                             .ThenBy(c => c.TotalRevenue)
+                             .ToArray();
+
+            string result = xmlHelper.Serialize<ExportCategoryDto>(categories, "Categories");
+
+            return result;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 
         public static IMapper CreateMapper()
         { 
