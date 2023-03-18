@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using ProductShop.Data;
+using ProductShop.DTOs.Export;
 using ProductShop.DTOs.Import;
 using ProductShop.Models;
 using ProductShop.Utilities;
@@ -14,9 +16,9 @@ namespace ProductShop
         {
             ProductShopContext context = new ProductShopContext();
 
-            var inputXML = File.ReadAllText("../../../Datasets/categories-products.xml");
-           
-            var result = ImportCategoryProducts(context, inputXML);
+            var inputXML = File.ReadAllText("../../../Datasets/products.xml");
+
+            var result = ImportProducts(context,inputXML);
             Console.WriteLine(result);
         }
 
@@ -108,6 +110,25 @@ namespace ProductShop
             return $"Successfully imported {validCategoriesProducts.Count}";
         }
 
+        //Problem 5
+        public static string GetProductsInRange(ProductShopContext context)
+        {
+            IMapper mapper = CreateMapper();
+            IXmlHelper xmlHelper= new XmlHelper();
+
+            var products = context.Products
+                           .Where(p => p.Price >= 500 && p.Price <= 1000)
+                           .ProjectTo<ExportProductInRangeDto>(mapper.ConfigurationProvider)
+                           .OrderBy(p => p.Price)
+                           .Take(10)
+                           .ToArray();
+                           
+
+
+            string result = xmlHelper.Serialize<ExportProductInRangeDto>(products, "Products");
+
+            return result;
+        }
 
         public static IMapper CreateMapper()
         { 
