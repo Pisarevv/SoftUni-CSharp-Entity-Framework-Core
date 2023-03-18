@@ -14,9 +14,9 @@ namespace ProductShop
         {
             ProductShopContext context = new ProductShopContext();
 
-            var inputXML = File.ReadAllText("../../../Datasets/products.xml");
+            var inputXML = File.ReadAllText("../../../Datasets/categories.xml");
            
-            var result = ImportProducts(context, inputXML);
+            var result = ImportCategories(context, inputXML);
             Console.WriteLine(result);
         }
 
@@ -64,6 +64,29 @@ namespace ProductShop
 
             return $"Successfully imported {validProducts.Count}";
         }
+
+        //Problem 3
+        public static string ImportCategories(ProductShopContext context, string inputXml)
+        {
+            IMapper mapper= CreateMapper();
+            IXmlHelper xmlHelper = new XmlHelper();
+
+            var categories = xmlHelper.DeserializeCollection<ImportCategoriesDto>(inputXml);
+            var validCategories = new HashSet<Category>();
+
+            foreach(var categoryDto in categories)
+            {
+                Category category = mapper.Map<Category>(categoryDto);
+                validCategories.Add(category);
+            }
+
+            context.Categories.AddRange(validCategories);
+            context.SaveChanges();
+
+            return $"Successfully imported {validCategories.Count}";
+        }
+
+
 
 
         public static IMapper CreateMapper()
