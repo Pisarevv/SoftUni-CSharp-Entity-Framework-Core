@@ -18,7 +18,7 @@ namespace ProductShop
 
             //var inputXML = File.ReadAllText("../../../Datasets/products.xml");
 
-            var result = GetCategoriesByProductsCount(context);
+            var result = GetUsersWithProducts(context);
             Console.WriteLine(result);
         }
 
@@ -167,6 +167,54 @@ namespace ProductShop
             return result;
         }
 
+
+        //Problem 8
+        public static string GetUsersWithProducts(ProductShopContext context)
+        {
+            IMapper mapper = CreateMapper();
+            IXmlHelper xmlHelper= new XmlHelper();
+
+            var users = context.Users
+                        .Where(u => u.ProductsSold.Any(x => x.Buyer != null))
+                        .Select(u => new ExportUserProductsInfoDto
+                        {
+                            FirstName = u.FirstName,
+                            LastName = u.LastName,
+                            Age = u.Age,
+                            SoldProductsCollection = new ExportProductsCollectionDto
+                            {
+                                ProductsCount = u.ProductsSold.Count(x => x.BuyerId != null),
+                                SoldProducts = u.ProductsSold
+                                               .Where(p => p.BuyerId != null)
+                                               .Select(p => new ExportProductDto
+                                               {
+                                                   Name = p.Name,
+                                                   Price = p.Price
+                                               })
+                                               .OrderByDescending(p => p.Price)
+                                               .ToArray()
+
+
+
+                            }
+                        })
+                        .OrderByDescending(u => u.SoldProductsCollection.ProductsCount)
+                        .ToArray();
+               
+
+
+            var userWarpper = new ExportUsersWrapperDto
+            {
+                Count = users.Length,
+                Users = users.Take(10).ToArray(),
+            };
+
+
+
+            string result = xmlHelper.Serialize<ExportUsersWrapperDto>(userWarpper, "Users");
+
+            return result;
+        }
 
 
 

@@ -16,6 +16,7 @@ namespace ProductShop
 
                 this.CreateMap<User, ExportUserAndSoldProductsDto>()
                 .ForMember(s => s.SoldProducts, obj => obj.MapFrom(s => s.ProductsSold));
+          
 
                 //Product
                 this.CreateMap<ImportProductDto, Product>();
@@ -24,6 +25,7 @@ namespace ProductShop
                 .ForMember(d => d.BuyerName, opt => opt.MapFrom(s => $"{s.Buyer.FirstName} {s.Buyer.LastName}"));
 
                 this.CreateMap<Product, ExportProductDto>();
+                
                 
 
                 //Category

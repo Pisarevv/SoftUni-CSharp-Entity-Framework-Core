@@ -56,6 +56,26 @@ public class XmlHelper : IXmlHelper
         return writer.ToString();
     }
 
+    public string Serialize<T>(T input, string rootName)
+    {
+
+        using StringWriter writer = new StringWriter();
+
+        XmlRootAttribute xmlRoot = new XmlRootAttribute(rootName);
+
+        XmlSerializer xmlSerializer = new XmlSerializer(typeof(T), xmlRoot);
+
+        XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+        ns.Add("", "");
+
+        xmlSerializer.Serialize(writer, input, ns);
+
+
+
+        return writer.ToString();
+    }
+
+
 
 
 
