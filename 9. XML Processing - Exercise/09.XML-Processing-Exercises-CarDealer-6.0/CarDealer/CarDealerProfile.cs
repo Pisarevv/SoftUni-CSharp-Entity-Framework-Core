@@ -24,6 +24,7 @@ namespace CarDealer
                 this.CreateMap<ImportCarDto, Car>();
                 this.CreateMap<Car, ExportCarWithDistanceDto>()
                 .ForMember(d => d.TraveledDistance, obj => obj.MapFrom(s => s.TraveledDistance));
+                this.CreateMap<Car, ExportBmwDto>();
 
                 //Customer
                 this.CreateMap<ImportCustomerDto,Customer>()
