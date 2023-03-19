@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CarDealer.DTOs.Export;
 using CarDealer.DTOs.Import;
 using CarDealer.Models;
 using System.Globalization;
@@ -21,6 +22,8 @@ namespace CarDealer
 
                 //Car
                 this.CreateMap<ImportCarDto, Car>();
+                this.CreateMap<Car, ExportCarWithDistanceDto>()
+                .ForMember(d => d.TraveledDistance, obj => obj.MapFrom(s => s.TraveledDistance));
 
                 //Customer
                 this.CreateMap<ImportCustomerDto,Customer>()
