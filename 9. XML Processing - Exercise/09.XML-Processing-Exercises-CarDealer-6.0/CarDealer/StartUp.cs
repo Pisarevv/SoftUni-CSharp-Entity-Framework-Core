@@ -16,7 +16,7 @@ namespace CarDealer
             CarDealerContext context = new CarDealerContext();
 
             //string inputXml = File.ReadAllText("../../../Datasets/sales.xml");
-            string result = GetCarsWithTheirListOfParts(context);
+            string result = GetTotalSalesByCustomer(context);
             Console.WriteLine(result);
 
 
@@ -248,6 +248,21 @@ namespace CarDealer
                        .ToArray();
 
             return xmlHelper.Serialize<ExportCarWithPartsDto>(cars, "cars");
+        }
+
+        //Problem 18
+        public static string GetTotalSalesByCustomer(CarDealerContext context)
+        {
+            IMapper mapper = CreateMapper();
+            IXmlHelper xmlHelper = new XmlHelper();
+
+            var customers = context.Customers
+                            .Where(c => c.Sales.Count > 0)
+                            .ProjectTo<ExportCustomerDto>(mapper.ConfigurationProvider)
+                            .OrderByDescending(c => c.SpentMoney)
+                            .ToArray();
+
+            return xmlHelper.Serialize<ExportCustomerDto>(customers,"customers");
         }
 
 

@@ -34,6 +34,9 @@ namespace CarDealer
                 //Customer
                 this.CreateMap<ImportCustomerDto,Customer>()
                 .ForMember(d => d.BirthDate, obj => obj.MapFrom(s => DateTime.Parse(s.BirthDate, CultureInfo.InvariantCulture)));
+                this.CreateMap<Customer,ExportCustomerDto>()
+                .ForMember(d => d.BoughtCars, obj => obj.MapFrom(s => s.Sales.Count))
+                .ForMember(d => d.SpentMoney, obj => obj.MapFrom(s => Math.Truncate(100 * (s.Sales.SelectMany(sa => sa.Car.PartsCars.Select(pc => pc.Part.Price * (s.IsYoungDriver? 0.95m : 1))).Sum()))/100));
 
                 //Sale
                 this.CreateMap<ImportSaleDto, Sale>();
