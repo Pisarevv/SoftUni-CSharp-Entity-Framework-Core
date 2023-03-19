@@ -13,7 +13,8 @@ namespace CarDealer
                 //Supplier
                 this.CreateMap<ImportSupplierDto,Supplier>();
 
-
+                //Part
+                this.CreateMap<ImportPartDto,Part>();
             });
         }
     }
