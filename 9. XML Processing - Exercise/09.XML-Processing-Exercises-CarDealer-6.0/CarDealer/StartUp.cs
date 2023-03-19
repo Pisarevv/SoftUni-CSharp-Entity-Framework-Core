@@ -13,8 +13,8 @@ namespace CarDealer
         {
             CarDealerContext context = new CarDealerContext();
 
-            string inputXml = File.ReadAllText("../../../Datasets/customers.xml");
-            string result = ImportCustomers(context, inputXml);
+            string inputXml = File.ReadAllText("../../../Datasets/sales.xml");
+            string result = ImportSales(context, inputXml);
             Console.WriteLine(result);
 
 
@@ -155,7 +155,35 @@ namespace CarDealer
             return $"Successfully imported {validCostumers.Count}";
         }
 
+        //Problem 13
+        public static string ImportSales(CarDealerContext context, string inputXml)
+        {
+            IMapper mapper = CreateMapper();
+            IXmlHelper xmlHelper = new XmlHelper();
 
+            List<int> validCarIds = context.Cars
+                                   .Select(c => c.Id)
+                                   .ToList();
+
+            var sales = xmlHelper.DeserializeCollection<ImportSaleDto>(inputXml);
+            var validSales = new HashSet<Sale>();
+
+            foreach(var saleDto in sales)
+            {
+                if(!validCarIds.Any(x => x == saleDto.CarId))
+                {
+                    continue;
+                }
+
+                Sale validSale = mapper.Map<Sale>(saleDto);
+                validSales.Add(validSale);
+            }
+
+            context.Sales.AddRange(validSales);
+            context.SaveChanges();
+
+            return $"Successfully imported {validSales.Count}";
+        }
 
 
 

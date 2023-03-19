@@ -25,7 +25,9 @@ namespace CarDealer
                 //Customer
                 this.CreateMap<ImportCustomerDto,Customer>()
                 .ForMember(d => d.BirthDate, obj => obj.MapFrom(s => DateTime.Parse(s.BirthDate, CultureInfo.InvariantCulture)));
-                
+
+                //Sale
+                this.CreateMap<ImportSaleDto, Sale>();
             });
         }
     }
