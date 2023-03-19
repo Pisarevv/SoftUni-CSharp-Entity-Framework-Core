@@ -26,8 +26,11 @@
 
   <ItemGroup>
     <Folder Include="DTOs\Export\" />
-    <Folder Include="DTOs\Import\" />
     <Folder Include="Results\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
 </Project>
