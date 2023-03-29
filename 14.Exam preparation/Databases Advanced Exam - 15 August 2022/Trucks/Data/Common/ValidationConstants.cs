@@ -22,7 +22,6 @@ public class ValidationConstants
     public const int MinClientNationalityLength = 2;
 
     //Dispatcher
-    //Client
     public const int MaxDispatcherNameLength = 40;
     public const int MinDispacherNameLength = 2;
 }

@@ -16,7 +16,7 @@ public class Truck
     public int Id { get; set; }
 
     [MaxLength(ValidationConstants.MaxRegistrationNumberLength)]
-    public string RegistrationNumber { get; set; }
+    public string RegistrationNumber  { get; set; }
 
     [Required]
     [MaxLength(ValidationConstants.MaxVinNumberLength)]

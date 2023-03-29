@@ -1,6 +1,8 @@
 ﻿namespace Trucks
 {
     using AutoMapper;
+    using Trucks.Data.Models;
+    using Trucks.DataProcessor.ImportDto;
 
     public class TrucksProfile : Profile
     {
@@ -9,7 +11,16 @@
         {
             new MapperConfiguration(cfg =>
             {
-                
+                //Truck
+                this.CreateMap<ImportTruckDto, Truck>();
+
+                //Dispatcher
+                this.CreateMap<ImportDespatcherDto, Despatcher>()
+                .ForMember(d => d.Trucks, obj => obj.Ignore());
+
+                //Client
+                this.CreateMap<ImportClientDto, Client>()
+                .ForMember(d => d.ClientsTrucks, obj => obj.Ignore());
             });
         }
 

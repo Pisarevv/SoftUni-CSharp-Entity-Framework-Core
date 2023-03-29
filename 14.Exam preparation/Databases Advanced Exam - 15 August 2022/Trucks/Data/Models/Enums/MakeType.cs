@@ -6,5 +6,5 @@ public enum MakeType
     Man = 1, 
     Mercedes = 2, 
     Scania = 3, 
-    Volvo =4
+    Volvo = 4
 }
