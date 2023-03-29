@@ -3,6 +3,7 @@
     using AutoMapper;
     using Footballers.Data.Models;
     using Footballers.Data.Models.Enums;
+    using Footballers.DataProcessor.ExportDto;
     using Footballers.DataProcessor.ImportDto;
     using System.Globalization;
 
@@ -25,9 +26,18 @@
                   .ForMember(d => d.BestSkillType, obj => obj.MapFrom(s => (BestSkillType)s.BestSkillType))
                   .ForMember(d => d.PositionType, obj => obj.MapFrom(s => (BestSkillType)s.PositionType));
 
+                 this.CreateMap<Coach, ExportCoatchDto>()
+                 .ForMember(d => d.CoachName, obj => obj.MapFrom(s => s.Name))
+                 .ForMember(d => d.FootballersCount, obj => obj.MapFrom(s => s.Footballers.Count))
+                 .ForMember(d => d.Footballers, obj => obj.MapFrom(s => s.Footballers.ToArray().OrderBy(f => f.Name).ToArray()));
+
                  //Team
                  this.CreateMap<ImportTeamDto, Team>()
                  .ForMember(d => d.TeamsFootballers, act => act.Ignore());
+
+                 //Footballer 
+                 this.CreateMap<Footballer, ExportFootballerDto>()
+                 .ForMember(d => d.Position, obj => obj.MapFrom(s => (PositionType)s.PositionType));
  
              });
         }
