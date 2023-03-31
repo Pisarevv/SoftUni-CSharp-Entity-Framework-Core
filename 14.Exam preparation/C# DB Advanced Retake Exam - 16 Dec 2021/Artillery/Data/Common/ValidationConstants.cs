@@ -16,8 +16,8 @@ public class ValidationConstants
     public const int MinFoundedTextLength = 10;
 
     //Shell
-    public const double MaxShellWeight = 1680.00;
-    public const double MinShellWeight = 2.00;
+    public const double MaxShellWeight = 1680;
+    public const double MinShellWeight = 2;
 
     public const int MaxCaliberLength = 30;
     public const int MinCaliberLength = 4;
