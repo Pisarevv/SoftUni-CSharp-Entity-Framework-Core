@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.11" />
@@ -21,7 +22,6 @@
     <ProjectReference Include="..\PetStore.Data.Models\PetStore.Data.Models.csproj" />
     <ProjectReference Include="..\PetStore.Data\PetStore.Data.csproj" />
     <ProjectReference Include="..\PetStore.Services.Data\PetStore.Services.Data.csproj" />
-    <ProjectReference Include="..\PetStore.Services.Mapping\PetStore.Services.Mapping.csproj" />
     <ProjectReference Include="..\PetStore.Services.Messaging\PetStore.Services.Messaging.csproj" />
     <ProjectReference Include="..\PetStore.Services\PetStore.Services.csproj" />
     <ProjectReference Include="..\PetStore.Web.Infrastructure\PetStore.Web.Infrastructure.csproj" />

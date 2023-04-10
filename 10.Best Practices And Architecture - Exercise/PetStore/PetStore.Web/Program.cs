@@ -8,19 +8,7 @@ namespace PetStore.Web
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
-            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-            builder.Services.AddControllersWithViews();
-
-            var app = builder.Build();
+            WebApplication app = ConfigurateServices(args);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -50,6 +38,41 @@ namespace PetStore.Web
             app.Run();
         }
 
+        private static WebApplication ConfigurateServices(string[] args)
+        {
+            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+            // Add services to the container.
+            var connectionString = builder
+                .Configuration
+                .GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+            builder
+                .Services
+                .AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionString));
+
+            builder
+                .Services
+                .AddDatabaseDeveloperPageExceptionFilter();
+
+            builder
+                .Services
+                .AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            builder
+                .Services
+                .AddControllersWithViews();
+
+            builder
+                .Services
+                .AddAutoMapper(typeof(Program));
+
+            WebApplication app = builder.Build();
+
+            return app;
+        }
 
     }
 }
