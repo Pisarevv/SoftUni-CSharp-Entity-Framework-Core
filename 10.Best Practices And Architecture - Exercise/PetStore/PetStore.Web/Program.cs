@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PetStore.Data;
+using PetStore.Data.Common.Repos;
+using PetStore.Data.Repositories;
 
 namespace PetStore.Web
 {
@@ -68,6 +70,16 @@ namespace PetStore.Web
             builder
                 .Services
                 .AddAutoMapper(typeof(Program));
+
+            //Repositories
+            builder
+                   .Services
+                   .AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+
+            builder
+                   .Services
+                   .AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
+
 
             WebApplication app = builder.Build();
 
